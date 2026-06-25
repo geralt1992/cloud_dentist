@@ -1,4 +1,3 @@
-import HeroCanvas from '../components/HeroCanvas.jsx'
 import FadeUp from '../components/FadeUp.jsx'
 import SmartLink from '../components/SmartLink.jsx'
 import { useClient } from '../client/ClientContext.jsx'
@@ -7,7 +6,7 @@ export default function Hero() {
   const c = useClient()
   return (
     <section className="hero" id="home">
-      <HeroCanvas />
+      <div className="hero-bg" />
       <div className="hero-grad" />
       <div className="container hero-c">
         <div style={{ maxWidth: 680 }}>
@@ -17,7 +16,13 @@ export default function Hero() {
               <span>{c.heroBadge}</span>
             </div>
           </FadeUp>
-          <FadeUp delay={0.12}>
+          <FadeUp delay={0.08}>
+            <div className="hero-name">
+              <span className="hero-name-mark" />
+              <span className="hero-name-txt">{c.name}</span>
+            </div>
+          </FadeUp>
+          <FadeUp delay={0.14}>
             <h1 className="hero-h1">
               <span className="gold-text">Osmijeh</span>
               <br />

@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-/* Ambient drifting particles + decorative rings behind the pricing page hero. */
-export default function PricingHeroCanvas() {
+/* Ambient drifting particles + (opcionalno) ukrasni prsteni iza hero sekcije.
+   rings=false → samo čestice (koristi se na naslovnom hero). */
+export default function PricingHeroCanvas({ rings = true }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -39,22 +40,25 @@ export default function PricingHeroCanvas() {
     )
     scene.add(pts)
 
-    // Large decorative rings
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(4, 0.012, 16, 120),
-      new THREE.MeshBasicMaterial({ color: 0xc8a56a, transparent: true, opacity: 0.12 })
-    )
-    ring.rotation.x = Math.PI / 5
-    ring.position.x = 5
-    scene.add(ring)
+    // Large decorative rings (opcionalno)
+    let ring, ring2
+    if (rings) {
+      ring = new THREE.Mesh(
+        new THREE.TorusGeometry(4, 0.012, 16, 120),
+        new THREE.MeshBasicMaterial({ color: 0xc8a56a, transparent: true, opacity: 0.12 })
+      )
+      ring.rotation.x = Math.PI / 5
+      ring.position.x = 5
+      scene.add(ring)
 
-    const ring2 = new THREE.Mesh(
-      new THREE.TorusGeometry(5.5, 0.008, 16, 120),
-      new THREE.MeshBasicMaterial({ color: 0xc8a56a, transparent: true, opacity: 0.07 })
-    )
-    ring2.rotation.x = Math.PI / 3
-    ring2.position.x = 4
-    scene.add(ring2)
+      ring2 = new THREE.Mesh(
+        new THREE.TorusGeometry(5.5, 0.008, 16, 120),
+        new THREE.MeshBasicMaterial({ color: 0xc8a56a, transparent: true, opacity: 0.07 })
+      )
+      ring2.rotation.x = Math.PI / 3
+      ring2.position.x = 4
+      scene.add(ring2)
+    }
 
     const onResize = () => {
       const W2 = window.innerWidth
@@ -75,8 +79,10 @@ export default function PricingHeroCanvas() {
         if (Math.abs(pos[i * 3 + 1]) > 5) vel[i * 3 + 1] *= -1
       }
       posAttr.needsUpdate = true
-      ring.rotation.z += 0.002
-      ring2.rotation.z -= 0.0015
+      if (rings) {
+        ring.rotation.z += 0.002
+        ring2.rotation.z -= 0.0015
+      }
       renderer.render(scene, camera)
     }
     animate()
@@ -86,7 +92,7 @@ export default function PricingHeroCanvas() {
       window.removeEventListener('resize', onResize)
       renderer.dispose()
     }
-  }, [])
+  }, [rings])
 
   return <canvas ref={ref} id="hero-canvas" />
 }

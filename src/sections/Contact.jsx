@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import FadeUp from '../components/FadeUp.jsx'
+import { Icon } from '../components/icons.jsx'
 import { useClient } from '../client/ClientContext.jsx'
 
 const SERVICES = [
@@ -29,10 +30,10 @@ export default function Contact() {
   const mapLink = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`
 
   const info = [
-    ['📍', 'Adresa', c.contact.address],
-    ['📞', 'Telefon', c.contact.phone],
-    ['✉', 'Email', c.contact.email],
-    ['🕐', 'Radno vrijeme', c.contact.hours],
+    [Icon.pin, 'Adresa', c.contact.address],
+    [Icon.phone, 'Telefon', c.contact.phone],
+    [Icon.mail, 'Email', c.contact.email],
+    [Icon.clock, 'Radno vrijeme', c.contact.hours],
   ]
 
   return (

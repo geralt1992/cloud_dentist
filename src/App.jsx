@@ -1,5 +1,8 @@
 import { Routes, Route, useParams } from 'react-router-dom'
 import ScrollToHash from './components/ScrollToHash.jsx'
+import SmoothScroll from './components/SmoothScroll.jsx'
+import ScrollProgress from './components/ScrollProgress.jsx'
+import CursorFX from './components/CursorFX.jsx'
 import { ClientProvider } from './client/ClientContext.jsx'
 import { getClient } from './data/clients.js'
 import Home from './pages/Home.jsx'
@@ -18,7 +21,11 @@ function DemoPage() {
 export default function App() {
   return (
     <ClientProvider>
+      <SmoothScroll />
       <ScrollToHash />
+      <ScrollProgress />
+      <CursorFX />
+      <div className="grain" aria-hidden="true" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cijenik" element={<Cijenik />} />

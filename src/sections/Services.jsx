@@ -1,4 +1,5 @@
 import FadeUp from '../components/FadeUp.jsx'
+import Tilt from '../components/Tilt.jsx'
 
 const SERVICES = [
   ['01', '✦', 'Estetska stomatologija', 'Transformirajte osmijeh krunicama, furnirom i naprednim estetskim tretmanima koji pružaju prirodan, blistav izgled.'],
@@ -39,13 +40,13 @@ export default function Services() {
         <div className="svc-grid">
           {SERVICES.map(([no, icon, nm, dsc], i) => (
             <FadeUp key={i} delay={i * 0.08}>
-              <div className="svc-card">
+              <Tilt className="svc-card" max={6}>
                 <div className="svc-no">{no}</div>
                 <div className="svc-icon">{icon}</div>
                 <div className="svc-ln" />
                 <h3 className="svc-nm">{nm}</h3>
                 <p className="svc-dsc">{dsc}</p>
-              </div>
+              </Tilt>
             </FadeUp>
           ))}
         </div>

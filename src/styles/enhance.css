@@ -1,0 +1,177 @@
+/* ════════════════════════════════════════════════════════════════
+   ENHANCE — nove "vau" sekcije i efekti (uz postojeći global.css)
+   Boje/varijable naslijeđene iz :root u global.css
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── LENIS SMOOTH SCROLL (baseline) ─── */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto !important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* ─── FILM GRAIN / ZRNATOST (jedva vidljiva tekstura preko sekcija) ─── */
+/* SVG noise (feTurbulence) + desaturacija → monokromatsko zrno; mix-blend
+   čini ga vidljivim uglavnom na tamnim plohama, skida "plastični" dojam. */
+.grain{position:fixed;inset:0;z-index:1400;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");background-size:220px 220px}
+@media (prefers-reduced-motion:reduce){.grain{opacity:.04}}
+
+/* ─── SCROLL PROGRESS (tanka zlatna crta na vrhu) ─── */
+.scroll-prog{position:fixed;top:0;left:0;right:0;height:3px;z-index:2000;background:transparent;pointer-events:none}
+.scroll-prog-bar{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold),var(--gold-l));box-shadow:0 0 12px rgba(200,165,106,.6);transition:width .08s linear}
+
+/* ─── CUSTOM CURSOR + MAGNETNI GUMBI ─── */
+.cur-dot,.cur-ring{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:3000;transform:translate(-50%,-50%);opacity:0;transition:opacity .3s}
+.has-cursor-fx .cur-dot,.has-cursor-fx .cur-ring{opacity:1}
+.cur-dot{width:6px;height:6px;background:var(--gold);box-shadow:0 0 8px rgba(200,165,106,.8)}
+.cur-ring{width:34px;height:34px;border:1px solid rgba(200,165,106,.55);transition:width .25s,height .25s,background .25s,border-color .25s,opacity .3s}
+.cur-ring.active{width:54px;height:54px;border-color:var(--gold);background:rgba(200,165,106,.08)}
+.cur-ring.hover{width:64px;height:64px;background:rgba(200,165,106,.12)}
+@media (pointer:fine){.has-cursor-fx,.has-cursor-fx a,.has-cursor-fx button,.has-cursor-fx .gi,.has-cursor-fx [role="slider"]{cursor:none}}
+.btn{transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .3s,background .3s,color .3s,border-color .3s}
+
+/* Animacija s cjenika (čestice + prsteni) na naslovnom hero — iznad pozadine, ispod sadržaja */
+.hero #hero-canvas{z-index:1}
+
+/* 3D tilt kartice */
+.svc-card,.team-card{will-change:transform}
+
+/* ─── HERO — ime ordinacije (potpis iznad naslova) ─── */
+.hero-name{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.hero-name-mark{width:36px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);flex:0 0 auto}
+.hero-name-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.4vw,1.75rem);font-weight:600;letter-spacing:.05em;color:var(--cream);text-shadow:0 2px 18px rgba(0,0,0,.5)}
+
+/* ─── HERO animirana pozadina (spori zoom) ─── */
+.hero-bg{position:absolute;inset:0;z-index:0;background:url('https://images.pexels.com/photos/6809642/pexels-photo-6809642.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat;opacity:.16;filter:grayscale(.25) brightness(.8);animation:heroZoom 22s ease-in-out infinite alternate;transform-origin:60% 40%}
+@keyframes heroZoom{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.28) translate(-3%,-2%)}}
+@media (prefers-reduced-motion:reduce){.hero-bg{animation:none}}
+
+/* ─── TRUSTED-BY / CERTIFIKATI ─── */
+.trust-strip{background:var(--dark2);padding:42px 0 46px;border-bottom:1px solid rgba(200,165,106,.08);overflow:hidden}
+.trust-cap{text-align:center;font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:30px}
+.trust-marquee{position:relative;width:100%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.trust-track{display:flex;align-items:center;width:max-content;animation:trustScroll 38s linear infinite}
+.trust-strip:hover .trust-track{animation-play-state:paused}
+/* padding (a ne gap) na svakom logu → duplikat se nastavlja bez šava */
+.trust-logo{flex:0 0 auto;padding:0 34px;font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:600;letter-spacing:.04em;color:rgba(232,228,222,.4);white-space:nowrap;transition:color .3s}
+.trust-logo:hover{color:var(--gold)}
+@keyframes trustScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.trust-track{animation:none;flex-wrap:wrap;justify-content:center;width:100%}}
+
+/* ─── BEFORE / AFTER SLIDER ─── */
+.ba-sec{background:var(--dark);position:relative}
+.ba-hdr{text-align:center;max-width:680px;margin:0 auto 56px}
+.ba-h2{font-size:clamp(2.2rem,5vw,3.6rem);color:#fff;margin-bottom:18px}
+.ba-sub{color:var(--muted);font-size:.95rem;font-weight:300}
+.ba-wrap{position:relative;max-width:920px;margin:0 auto;aspect-ratio:16/10;border-radius:4px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);user-select:none;touch-action:pan-y;outline:none}
+.ba-wrap:focus-visible{box-shadow:0 0 0 2px var(--gold),0 40px 90px -30px rgba(0,0,0,.8)}
+.ba-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.ba-before{will-change:clip-path}
+.ba-tag{position:absolute;top:18px;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:6px 14px;background:rgba(8,12,18,.65);backdrop-filter:blur(6px);color:#fff;border:1px solid rgba(255,255,255,.15);z-index:3}
+.ba-tag-before{left:18px}
+.ba-tag-after{right:18px;color:var(--gold);border-color:rgba(200,165,106,.4)}
+.ba-handle{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.9);transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:ew-resize;box-shadow:0 0 18px rgba(0,0,0,.5)}
+.ba-line{flex:1;width:2px;background:linear-gradient(var(--gold),transparent)}
+.ba-handle .ba-line:last-child{background:linear-gradient(transparent,var(--gold))}
+.ba-knob{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--gold);color:var(--dark);display:flex;align-items:center;justify-content:center;gap:2px;font-size:1.1rem;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.ba-knob span{line-height:1}
+
+/* ─── PROCES (vertikalni timeline) ─── */
+.proc-sec{background:var(--dark2);position:relative}
+.proc-hdr{margin-bottom:56px}
+.proc-h2{font-size:clamp(2.2rem,5vw,3.6rem);color:#fff}
+.proc-timeline{position:relative;max-width:760px;margin:0 auto;padding-left:14px}
+.proc-line{position:absolute;left:32px;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,transparent,rgba(200,165,106,.5),rgba(200,165,106,.5),transparent)}
+.proc-step{display:flex;gap:34px;align-items:flex-start;padding:22px 0}
+.proc-node{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:1px solid rgba(200,165,106,.4);background:var(--dark);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);position:relative;z-index:1;transition:all .4s;margin-left:1px}
+.proc-step:hover .proc-node{background:linear-gradient(135deg,var(--gold),var(--gold-d));color:var(--dark);box-shadow:0 0 30px -6px rgba(200,165,106,.6);transform:scale(1.06)}
+.proc-title{font-size:1.6rem;color:#fff;margin-bottom:8px}
+.proc-desc{color:var(--muted);font-size:.92rem;line-height:1.8;max-width:520px;font-weight:300}
+
+/* ─── TIM ─── */
+.team-sec{background:var(--dark)}
+.team-hdr{text-align:center;margin-bottom:56px}
+.team-h2{font-size:clamp(2.2rem,5vw,3.6rem);color:#fff}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.team-card{position:relative}
+.team-photo{position:relative;overflow:hidden;border-radius:4px;aspect-ratio:3/4}
+.team-photo img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1);filter:grayscale(.25)}
+.team-card:hover .team-photo img{transform:scale(1.06);filter:grayscale(0)}
+.team-reveal{position:absolute;inset:0;display:flex;align-items:flex-end;padding:26px;background:linear-gradient(180deg,transparent 30%,rgba(8,12,18,.92));opacity:0;transition:opacity .45s}
+.team-card:hover .team-reveal{opacity:1}
+.team-reveal p{color:var(--text);font-size:.88rem;line-height:1.7;font-weight:300;transform:translateY(12px);transition:transform .45s}
+.team-card:hover .team-reveal p{transform:translateY(0)}
+.team-info{padding:20px 4px 0;border-top:1px solid rgba(200,165,106,.15);margin-top:18px}
+.team-name{font-size:1.4rem;color:#fff;margin-bottom:4px}
+.team-role{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+
+/* ─── GOOGLE RECENZIJE BADGE ─── */
+.tst-hdr .gr-badge{margin:26px auto 0}
+.gr-badge{display:inline-flex;align-items:center;gap:12px;background:#fff;color:#202124;padding:12px 22px;border-radius:100px;text-decoration:none;box-shadow:0 12px 34px -12px rgba(0,0,0,.5);transition:transform .3s,box-shadow .3s}
+.gr-badge:hover{transform:translateY(-2px);box-shadow:0 18px 40px -12px rgba(0,0,0,.6)}
+.gr-logo{font-family:'Inter',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:-.02em}
+.gr-rating{font-weight:700;font-size:1.05rem;color:#202124}
+.gr-stars{color:#FBBC05;letter-spacing:1px;font-size:.95rem;position:relative}
+.gr-half{position:relative;color:#FBBC05;opacity:.45}
+.gr-count{font-size:.78rem;color:#5f6368}
+
+/* ─── QUICK BOOK (rezerviraj u 30s) ─── */
+.qb-sec{position:relative;padding:var(--pad) 0;background:var(--dark);overflow:hidden}
+.qb-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(200,165,106,.16),transparent 60%);pointer-events:none}
+.qb-card{position:relative;display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center;background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid rgba(200,165,106,.18);border-radius:8px;padding:clamp(30px,5vw,56px);backdrop-filter:blur(8px)}
+.qb-h2{font-size:clamp(1.9rem,4vw,3rem);color:#fff;margin:6px 0 14px}
+.qb-p{color:var(--muted);font-size:.92rem;font-weight:300;line-height:1.75;max-width:360px}
+.qb-form{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.qb-field{display:flex;flex-direction:column;gap:8px}
+.qb-field span{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.qb-field select,.qb-field input{background:rgba(8,12,18,.6);border:1px solid rgba(200,165,106,.22);color:var(--text);padding:13px 14px;font-family:'Inter',sans-serif;font-size:.88rem;border-radius:4px;transition:border-color .3s;width:100%}
+.qb-field select:focus,.qb-field input:focus{outline:none;border-color:var(--gold)}
+.qb-field input::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(3) hue-rotate(5deg)}
+.qb-submit{grid-column:1/-1;justify-content:center;margin-top:4px}
+
+/* ─── FAQ na naslovnici (koristi .faq-item iz global.css) ─── */
+.faqh-sec{background:var(--dark2)}
+.faqh-inner{display:grid;grid-template-columns:.85fr 1.15fr;gap:60px;align-items:start}
+.faqh-aside{position:sticky;top:120px}
+.faqh-h2{font-size:clamp(2rem,4vw,3.2rem);color:#fff;margin-bottom:18px}
+.faqh-p{color:var(--muted);font-size:.92rem;font-weight:300;line-height:1.8;max-width:320px}
+.faqh-list{display:flex;flex-direction:column;gap:0}
+
+/* ─── FOOTER ikone (kontakt + društvene mreže) ─── */
+.ftr-contact{gap:14px !important}
+.ftr-contact li{display:flex;align-items:flex-start;gap:12px}
+.ftr-ic{flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(200,165,106,.08);border:1px solid rgba(200,165,106,.18);color:var(--gold);transition:all .3s}
+.ftr-ic svg{width:15px;height:15px}
+.ftr-contact li:hover .ftr-ic{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+.ftr-contact a{padding-top:5px}
+/* Društvene mreže — okrugle, zlatni hover umjesto ružnih kvadrata */
+.ftr-soc{gap:10px}
+.ftr-si{width:38px;height:38px;border-radius:50%;border:1px solid rgba(200,165,106,.22);color:var(--muted);background:rgba(255,255,255,.02);transition:all .3s}
+.ftr-si:hover{border-color:var(--gold);color:var(--dark);background:var(--gold);transform:translateY(-3px);box-shadow:0 8px 20px -6px rgba(200,165,106,.5)}
+
+/* ─── KONTAKT sekcija — ikone usklađene s footerom ─── */
+.cnt-ico{width:46px !important;height:46px;border-radius:11px;background:rgba(200,165,106,.1);border:1px solid rgba(200,165,106,.28);color:var(--gold);transition:all .3s}
+.cnt-ico svg{width:20px;height:20px}
+.cnt-item{transition:transform .3s}
+.cnt-item:hover .cnt-ico{background:var(--gold);color:var(--dark);border-color:var(--gold);box-shadow:0 8px 20px -6px rgba(200,165,106,.5)}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width:900px){
+  .team-grid{grid-template-columns:1fr 1fr}
+  .qb-card{grid-template-columns:1fr;gap:30px}
+  .faqh-inner{grid-template-columns:1fr;gap:34px}
+  .faqh-aside{position:static}
+}
+@media (max-width:680px){
+  .team-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto}
+  .qb-form{grid-template-columns:1fr}
+  .proc-step{gap:20px}
+  .proc-node{width:52px;height:52px;font-size:1.2rem}
+  .proc-line{left:27px}
+  .ba-wrap{aspect-ratio:4/5}
+  .ba-knob{width:40px;height:40px}
+  .trust-logo{font-size:1.3rem;padding:0 24px}
+  .gr-badge{flex-wrap:wrap;justify-content:center;gap:8px;padding:12px 18px}
+  .ba-tag{top:12px;font-size:.56rem;padding:5px 11px}
+  .ba-tag-before{left:12px}.ba-tag-after{right:12px}
+  .qb-card{padding:26px 22px}
+}

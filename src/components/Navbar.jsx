@@ -6,16 +6,20 @@ import SmartLink from './SmartLink.jsx'
 const LINKS = [
   ['Usluge', '/#usluge'],
   ['O nama', '/#o-nama'],
-  ['Galerija', '/#galerija'],
+  ['Rezultati', '/#rezultati'],
   ['Recenzije', '/#recenzije'],
   ['Cjenik', '/cijenik'],
   ['Kontakt', '/#kontakt'],
 ]
 
+const SECTION_IDS = ['home', 'usluge', 'proces', 'o-nama', 'tim', 'rezultati', 'galerija', 'recenzije', 'rezervacija', 'pitanja', 'kontakt']
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [activeSec, setActiveSec] = useState('home')
   const { pathname } = useLocation()
+  const onHome = pathname === '/' || pathname.startsWith('/demo/')
   const c = useClient()
 
   useEffect(() => {
@@ -24,7 +28,31 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const isActive = (to) => to === '/cijenik' && pathname === '/cijenik'
+  // Scroll-spy: označi sekciju koja je trenutno u vidnom polju
+  useEffect(() => {
+    if (!onHome) return
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const vis = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+        if (vis) setActiveSec(vis.target.id)
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+    )
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) obs.observe(el)
+    })
+    return () => obs.disconnect()
+  }, [onHome])
+
+  const isActive = (to) => {
+    if (to === '/cijenik') return pathname === '/cijenik'
+    if (!onHome) return false
+    const hash = to.split('#')[1]
+    return hash && hash === activeSec
+  }
 
   return (
     <>

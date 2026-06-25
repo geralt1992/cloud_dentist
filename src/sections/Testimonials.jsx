@@ -1,4 +1,5 @@
 import FadeUp from '../components/FadeUp.jsx'
+import ReviewsBadge from '../components/ReviewsBadge.jsx'
 
 const TESTIMONIALS = [
   {
@@ -40,6 +41,9 @@ export default function Testimonials() {
               <br />
               <em className="gold-text">zadovoljni pacijenti</em>
             </h2>
+          </FadeUp>
+          <FadeUp delay={0.18}>
+            <ReviewsBadge />
           </FadeUp>
         </div>
         <div className="tst-grid">

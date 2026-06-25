@@ -24,7 +24,7 @@ export default function HeroCanvas() {
     renderer.setPixelRatio(pr)
 
     // Raspodjela zvjezdica po širokom prostoru iza heroja
-    const COUNT = 85
+    const COUNT = 48
     const pos = new Float32Array(COUNT * 3)
     const phase = new Float32Array(COUNT)
     const scale = new Float32Array(COUNT)
@@ -65,7 +65,7 @@ export default function HeroCanvas() {
           vec4 mv = modelViewMatrix * vec4(position, 1.0);
           gl_Position = projectionMatrix * mv;
           float tw = 0.5 + 0.5 * sin(uTime * 1.4 + phase);
-          vAlpha = 0.12 + 0.78 * tw;
+          vAlpha = 0.08 + 0.5 * tw;
           vGold = gold;
           gl_PointSize = scale * uPr * (90.0 / -mv.z);
         }
