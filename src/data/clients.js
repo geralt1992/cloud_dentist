@@ -19,7 +19,7 @@ export const DEFAULT_CLIENT = {
   doctor: 'Dr. Ana Kovač',
   yearsTag: '15+',
   yearsLabel: 'Godina iskustva',
-  photo: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=800',
+  photo: 'https://images.pexels.com/photos/17792882/pexels-photo-17792882.jpeg?auto=compress&cs=tinysrgb&w=800',
   bio: [
     'S više od 15 godina iskustva u estetskoj i rekonstruktivnoj stomatologiji, dr. Ana Kovač vodi DentArt Studio s misijom pružanja personalizirane skrbi svakome tko nam pokloni povjerenje.',
     'Obrazovana na Stomatološkom fakultetu u Zagrebu i usavršena u Beču i Parizu, redovito pohađa međunarodne kongrese te uvodi najsuvremenije metode u svoju praksu.',
