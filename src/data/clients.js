@@ -103,6 +103,78 @@ export const CLIENTS = {
       hours: 'Pon, Sri: 14:00–20:00 · Uto, Čet, Pet: 8:00–15:00 · ostalo po dogovoru',
     },
   },
+
+  // ───────── KLIJENT 4 — Andrea Malogorski Šimašek (Osijek) ─────────
+  // Izvor: facebook.com/dental.malogorski + javni imenici → /demo/dental-malogorski
+  'dental-malogorski': {
+    name: 'Ordinacija dentalne medicine Andrea Malogorski Šimašek',
+    logoSub: 'Dentalna medicina',
+    city: 'Osijek',
+    heroBadge: 'Osijek · Vaš osmijeh u sigurnim rukama',
+    doctor: 'dr. med. dent. Andrea Malogorski Šimašek',
+    // ženska doktorica → ženska fotografija (muška default ne odgovara)
+    photo: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=800',
+    yearsTag: '15+',
+    yearsLabel: 'Godina iskustva',
+    bio: [
+      'Ordinaciju dentalne medicine u Osijeku vodi dr. med. dent. Andrea Malogorski Šimašek, posvećena pažljivom i individualnom pristupu svakom pacijentu.',
+      'Od redovite preventive i restaurativne stomatologije do estetskih zahvata — cilj je zdrav, prirodan i samouvjeren osmijeh u ugodnoj i opuštenoj atmosferi.',
+    ],
+    contact: {
+      address: 'Park kralja Petra Krešimira IV 6, 31000 Osijek',
+      phone: '+385 31 225 335', // s javnih imenika — provjeri
+      phoneHref: '+38531225335',
+      email: 'ordinacija.malogorski@gmail.com', // s weba — provjeri
+      hours: 'Pon, Sri: 13:00–19:30 · Uto, Čet, Pet: 7:00–13:00',
+    },
+  },
+
+  // ───────── KLIJENT 5 — Ines Baždar Spajić (Đakovo) ─────────
+  // Izvor: podaci klijenta + javni imenici → /demo/bazdar-spajic
+  'bazdar-spajic': {
+    name: 'Privatna ordinacija dentalne medicine Ines Baždar Spajić',
+    logoSub: 'Implantologija i estetska stomatologija',
+    city: 'Đakovo',
+    heroBadge: 'Đakovo · Implantati i estetska stomatologija',
+    doctor: 'dr. med. dent. Ines Baždar Spajić',
+    photo: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=800',
+    yearsTag: '15+',
+    yearsLabel: 'Godina iskustva',
+    bio: [
+      'Privatnu ordinaciju dentalne medicine u Đakovu vodi dr. med. dent. Ines Baždar Spajić, uz najsuvremenije tehnologije i materijale te individualan pristup svakom pacijentu.',
+      'Ordinacija pokriva opću i estetsku stomatologiju te implantologiju, a uz brzu i jednostavnu ortopan snimku sve je na jednom mjestu — bez nepotrebnog čekanja i putovanja.',
+    ],
+    contact: {
+      address: 'Ante Starčevića 8, 31400 Đakovo',
+      phone: '+385 31 300 221', // s javnih imenika — provjeri
+      phoneHref: '+38531300221',
+      email: 'ordinacija_bazdar@yahoo.com',
+      hours: 'Radno vrijeme: ___', // nije javno navedeno — provjeri
+    },
+  },
+
+  // ───────── KLIJENT 6 — Ivan Francem (Đakovo) ─────────
+  // Izvor: podaci klijenta + croatia-dental.eu + javni imenici → /demo/ivan-francem
+  'ivan-francem': {
+    name: 'Ordinacija dentalne medicine Ivan Francem',
+    logoSub: 'Dentalna medicina · Đakovo',
+    city: 'Đakovo',
+    heroBadge: 'Đakovo · Cjelovita dentalna skrb na jednom mjestu',
+    doctor: 'dr. med. dent. Ivan Francem',
+    yearsTag: '15+',
+    yearsLabel: 'Godina iskustva',
+    bio: [
+      'Ordinaciju dentalne medicine u srcu Đakova vodi dr. med. dent. Ivan Francem, pružajući visokokvalitetnu dentalnu skrb uz individualan pristup svakom pacijentu.',
+      'Od protetike, ortodoncije i parodontologije do endodoncije, oralne kirurgije i estetskih zahvata (bijeljenje, pjeskarenje) — sve usluge dostupne su na jednom mjestu.',
+    ],
+    contact: {
+      address: 'Ulica bana Jelačića 26a, 31400 Đakovo',
+      phone: '+385 31 821 554', // s weba — provjeri
+      phoneHref: '+38531821554',
+      email: 'ivan@croatia-dental.eu',
+      hours: 'Pon, Čet: 13:00–20:30 · Uto, Sri, Pet: 7:00–14:30',
+    },
+  },
 }
 
 /* Vrati podatke klijenta po slugu, popunjene defaultima za sve što nije navedeno. */
