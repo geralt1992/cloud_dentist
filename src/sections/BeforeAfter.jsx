@@ -1,11 +1,16 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import FadeUp from '../components/FadeUp.jsx'
+import Img from '../components/Img.jsx'
+import { pexels } from '../lib/img.js'
 
 /* Interaktivni "prije / poslije" kliznik preko slike osmijeha.
-   Povuci ručku (ili klikni/dodirni) da otkriješ transformaciju. */
-// BEFORE = krivi zubi / aparatić (prije ortodoncije), AFTER = ravni bijeli osmijeh (poslije)
-const BEFORE = 'https://images.pexels.com/photos/5524024/pexels-photo-5524024.jpeg?auto=compress&cs=tinysrgb&w=1100'
-const AFTER = 'https://images.pexels.com/photos/3762441/pexels-photo-3762441.jpeg?auto=compress&cs=tinysrgb&w=1100'
+   Povuci ručku (ili klikni/dodirni) da otkriješ transformaciju.
+   Obje strane su ISTA fotografija (ista osoba, isti kadar); "prije" prolazi kroz
+   SVG filter koji požuti samo najsvjetlije tonove (zube), a kožu gotovo ne dira.
+   Kad klijent ima svoje prave fotke, zamijeni SMILE i makni filter. */
+const SMILE = pexels(3762441)
+const WIDTHS = [700, 1100, 1500]
+const SIZES = '(max-width: 960px) 100vw, 920px'
 
 export default function BeforeAfter() {
   const [pos, setPos] = useState(50)
@@ -60,7 +65,7 @@ export default function BeforeAfter() {
             </h2>
           </FadeUp>
           <FadeUp delay={0.18}>
-            <p className="ba-sub">Povucite kliznik i otkrijte razliku — stvarni rezultati naših pacijenata.</p>
+            <p className="ba-sub">Povucite kliznik i otkrijte razliku koju donosi profesionalno bijeljenje.</p>
           </FadeUp>
         </div>
 
@@ -81,14 +86,26 @@ export default function BeforeAfter() {
               if (e.key === 'ArrowRight') setPos((p) => Math.min(100, p + 4))
             }}
           >
-            <img className="ba-img ba-after" src={AFTER} alt="Osmijeh poslije tretmana" draggable="false" />
-            <img
-              className="ba-img ba-before"
-              src={BEFORE}
-              alt="Osmijeh prije tretmana"
+            <Img
+              className="ba-img"
+              src={SMILE}
+              widths={WIDTHS}
+              sizes={SIZES}
+              alt="Osmijeh poslije bijeljenja"
               draggable="false"
-              style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+              loading="lazy"
             />
+            <div className="ba-before-clip" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
+              <Img
+                className="ba-img ba-before"
+                src={SMILE}
+                widths={WIDTHS}
+                sizes={SIZES}
+                alt="Osmijeh prije bijeljenja"
+                draggable="false"
+                loading="lazy"
+              />
+            </div>
             <span className="ba-tag ba-tag-before">Prije</span>
             <span className="ba-tag ba-tag-after">Poslije</span>
             <div className="ba-handle" style={{ left: `${pos}%` }}>
@@ -100,8 +117,20 @@ export default function BeforeAfter() {
               <div className="ba-line" />
             </div>
           </div>
+          <p className="ba-note">Ilustrativni prikaz</p>
         </FadeUp>
       </div>
+
+      {/* "Požutjeli zubi": tablice spuštaju plavi (i malo zeleni) kanal samo u svijetlim tonovima */}
+      <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true" focusable="false">
+        <filter id="ba-stain" colorInterpolationFilters="sRGB">
+          <feComponentTransfer>
+            <feFuncR type="table" tableValues="0 .125 .25 .375 .5 .625 .75 .87 .96" />
+            <feFuncG type="table" tableValues="0 .125 .25 .375 .5 .62 .73 .82 .89" />
+            <feFuncB type="table" tableValues="0 .125 .25 .37 .48 .56 .6 .63 .66" />
+          </feComponentTransfer>
+        </filter>
+      </svg>
     </section>
   )
 }

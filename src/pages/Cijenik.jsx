@@ -1,14 +1,15 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar.jsx'
 import Footer from '../components/Footer.jsx'
 import FloatCTA from '../components/FloatCTA.jsx'
-import FadeUp from '../components/FadeUp.jsx'
 import PriceHero from '../sections/cijenik/PriceHero.jsx'
 import PriceTabs from '../sections/cijenik/PriceTabs.jsx'
 import PriceTable from '../sections/cijenik/PriceTable.jsx'
 import Packages from '../sections/cijenik/Packages.jsx'
 import FAQ from '../sections/cijenik/FAQ.jsx'
+import CTAStrip from '../sections/CTAStrip.jsx'
+import { useClient } from '../client/ClientContext.jsx'
+import { useDocumentTitle } from '../lib/useDocumentTitle.js'
 import { PRICE_DATA, TABS } from '../data/pricing.js'
 
 const PACKAGES_TAB = TABS.length - 1 // zadnji tab je "Paketi"
@@ -40,6 +41,8 @@ function PriceContent() {
 }
 
 export default function Cijenik() {
+  const c = useClient()
+  useDocumentTitle(`Cjenik | ${c.name}`)
   return (
     <>
       <FloatCTA threshold={400} />
@@ -47,21 +50,11 @@ export default function Cijenik() {
       <PriceHero />
       <PriceContent />
       <FAQ />
-      <section className="cta-strip">
-        <div className="container">
-          <FadeUp>
-            <h2>
-              Spremi se za osmijeh
-              <br />
-              koji mijenja sve
-            </h2>
-            <p>Zakaži besplatnu konzultaciju i saznaj točan plan i cijenu za tvoj slučaj.</p>
-            <Link to="/#kontakt" className="btn btn-dark">
-              Zakaži besplatnu konzultaciju →
-            </Link>
-          </FadeUp>
-        </div>
-      </section>
+      <CTAStrip
+        title="Spremni za osmijeh"
+        titleEm="koji mijenja sve?"
+        text="Zakažite besplatnu konzultaciju i saznajte točan plan i cijenu za svoj slučaj."
+      />
       <Footer />
     </>
   )

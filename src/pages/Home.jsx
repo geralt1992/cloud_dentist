@@ -1,4 +1,6 @@
 import { useClient } from '../client/ClientContext.jsx'
+import { useDocumentTitle } from '../lib/useDocumentTitle.js'
+import { pageTitle } from '../lib/format.js'
 import Navbar from '../components/Navbar.jsx'
 import Footer from '../components/Footer.jsx'
 import FloatCTA from '../components/FloatCTA.jsx'
@@ -20,7 +22,9 @@ import CTAStrip from '../sections/CTAStrip.jsx'
 import Contact from '../sections/Contact.jsx'
 
 export default function Home() {
-  const { isDemo } = useClient()
+  const c = useClient()
+  const { isDemo } = c
+  useDocumentTitle(pageTitle(c))
   return (
     <>
       {isDemo ? <DemoBanner /> : <FloatCTA threshold={600} />}

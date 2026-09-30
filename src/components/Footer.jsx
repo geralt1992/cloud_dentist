@@ -3,7 +3,13 @@ import SmartLink from './SmartLink.jsx'
 import { Icon } from './icons.jsx'
 
 const SERVICES = ['Estetska stomatologija', 'Implantati', 'Ortodoncija', 'Bijeljenje zuba', 'Parodontologija']
-const PRACTICE = ['O nama', 'Naš tim', 'Galerija', 'Recenzije', 'Cjenik']
+const PRACTICE = [
+  ['O nama', '/#o-nama'],
+  ['Naš tim', '/#tim'],
+  ['Galerija', '/#galerija'],
+  ['Recenzije', '/#recenzije'],
+  ['Cjenik', '/cijenik'],
+]
 
 const SocialIcon = {
   f: <path d="M14 8.5h2V5.7h-2.3C11.4 5.7 10 7 10 9v1.6H8V13h2v6h2.6v-6H15l.5-2.4h-2.9V9.1c0-.4.3-.6.7-.6Z" />,
@@ -33,6 +39,7 @@ const SOCIALS = [
 export default function Footer() {
   const c = useClient()
   const year = new Date().getFullYear()
+  const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${c.name}, ${c.contact.address}`)}`
 
   return (
     <footer className="ftr">
@@ -44,7 +51,7 @@ export default function Footer() {
               <span className="logo-s">{c.logoSub}</span>
             </SmartLink>
             <p>
-              Vaša stomatološka ordinacija u srcu grada {c.city}. Posvećeni izvrsnosti u svakom osmijehu koji stvaramo zajedno s vama.
+              Vrhunska dentalna skrb u {c.cityIn}. Posvećeni izvrsnosti u svakom osmijehu koji stvaramo zajedno s vama.
             </p>
           </div>
           <div className="ftr-col">
@@ -60,9 +67,9 @@ export default function Footer() {
           <div className="ftr-col">
             <h4>Ordinacija</h4>
             <ul>
-              {PRACTICE.map((s) => (
-                <li key={s}>
-                  <SmartLink to={s === 'Cjenik' ? '/cijenik' : '/#o-nama'}>{s}</SmartLink>
+              {PRACTICE.map(([label, to]) => (
+                <li key={label}>
+                  <SmartLink to={to}>{label}</SmartLink>
                 </li>
               ))}
             </ul>
@@ -72,7 +79,7 @@ export default function Footer() {
             <ul className="ftr-contact">
               <li>
                 <span className="ftr-ic">{Icon.pin}</span>
-                <a href="#">{c.contact.address}</a>
+                <a href={mapLink} target="_blank" rel="noreferrer">{c.contact.address}</a>
               </li>
               <li>
                 <span className="ftr-ic">{Icon.phone}</span>
@@ -84,7 +91,7 @@ export default function Footer() {
               </li>
               <li>
                 <span className="ftr-ic">{Icon.clock}</span>
-                <a href="#">{c.contact.hours}</a>
+                <span className="ftr-hours">{c.contact.hours}</span>
               </li>
             </ul>
           </div>

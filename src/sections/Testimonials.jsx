@@ -1,31 +1,33 @@
 import FadeUp from '../components/FadeUp.jsx'
 import ReviewsBadge from '../components/ReviewsBadge.jsx'
+import { useClient } from '../client/ClientContext.jsx'
+import { pexels } from '../lib/img.js'
 
-const TESTIMONIALS = [
+/* Generičke recenzije za sve demoe — bez imena doktora/ordinacije, da se ništa
+   ne kosi s klijentom. Grad se umeće iz podataka (c.cityIn = "Osijeku"). */
+const testimonials = (c) => [
   {
-    txt: 'Nikada nisam vjerovala da ću se osjećati ovako lijepo s novim osmijehom. Dr. Kovač je napravila nevjerojatan posao — prirodno, elegantno, savršeno.',
+    txt: 'Nikada nisam vjerovala da ću se osjećati ovako lijepo s novim osmijehom. Rezultat je nadmašio sva očekivanja — prirodno, elegantno, savršeno.',
     name: 'Maja Horvat',
     role: 'Marketing direktorica',
-    stars: 5,
-    av: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100',
+    av: pexels(1239291, 120),
   },
   {
-    txt: 'Implantati su savršeno usklađeni s mojim prirodnim zubima. Proces je bio bezbolaniji nego što sam ikad mogao zamisliti. Vrhunska stručnost i ljubaznost.',
+    txt: 'Implantati su savršeno usklađeni s mojim prirodnim zubima. Cijeli postupak bio je bezbolniji nego što sam mogao zamisliti. Vrhunska stručnost i ljubaznost.',
     name: 'Tomislav Barić',
     role: 'Arhitekt',
-    stars: 5,
-    av: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=100',
+    av: pexels(220453, 120),
   },
   {
-    txt: 'Bijeljenje u jednoj sesiji i razlika je dramatična! Ordinacija je moderna, osoblje profesionalno. DentArt je jedina adresa za stomatologiju u Zagrebu.',
+    txt: `Bijeljenje u jednoj posjeti i razlika je dramatična! Ordinacija je moderna, osoblje profesionalno — ovo mi je jedina adresa za stomatologiju u ${c.cityIn}.`,
     name: 'Petra Nikolić',
     role: 'Poduzetnica',
-    stars: 5,
-    av: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100',
+    av: pexels(774909, 120),
   },
 ]
 
 export default function Testimonials() {
+  const c = useClient()
   return (
     <section className="tst-sec section" id="recenzije">
       <div className="container">
@@ -47,15 +49,15 @@ export default function Testimonials() {
           </FadeUp>
         </div>
         <div className="tst-grid">
-          {TESTIMONIALS.map((t, i) => (
-            <FadeUp key={i} delay={i * 0.14}>
+          {testimonials(c).map((t, i) => (
+            <FadeUp key={t.name} delay={i * 0.14}>
               <div className="tst-card">
                 <div className="tst-q">"</div>
-                <div className="tst-stars">{'★'.repeat(t.stars)}</div>
+                <div className="tst-stars">★★★★★</div>
                 <p className="tst-txt">{t.txt}</p>
                 <div className="tst-aut">
                   <div className="tst-av">
-                    <img src={t.av} alt={t.name} />
+                    <img src={t.av} alt={t.name} loading="lazy" decoding="async" />
                   </div>
                   <div>
                     <div className="tst-nm">{t.name}</div>

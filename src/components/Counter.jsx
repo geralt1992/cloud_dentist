@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { fmtNum } from '../lib/format.js'
 
 /* Counts up to `to` (then appends `suffix`) the first time it scrolls into view. */
 export default function Counter({ to, suffix = '' }) {
@@ -32,7 +33,7 @@ export default function Counter({ to, suffix = '' }) {
 
   return (
     <span ref={ref}>
-      {n}
+      {fmtNum(n)}
       {suffix}
     </span>
   )

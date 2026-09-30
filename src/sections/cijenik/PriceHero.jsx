@@ -1,11 +1,16 @@
+import { lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
-import PricingHeroCanvas from '../../components/PricingHeroCanvas.jsx'
 import FadeUp from '../../components/FadeUp.jsx'
+
+// three.js (~500 KB) je samo ukras — tekst cjenika se prikaže odmah, čestice stignu naknadno.
+const PricingHeroCanvas = lazy(() => import('../../components/PricingHeroCanvas.jsx'))
 
 export default function PriceHero() {
   return (
     <section className="page-hero">
-      <PricingHeroCanvas />
+      <Suspense fallback={null}>
+        <PricingHeroCanvas />
+      </Suspense>
       <div className="page-hero-grad" />
       <div className="container page-hero-c">
         <FadeUp>

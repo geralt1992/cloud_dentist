@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useClient } from '../client/ClientContext.jsx'
 import { AGENCY } from '../data/agency.js'
 
@@ -6,21 +6,34 @@ import { AGENCY } from '../data/agency.js'
    i poziva klijenta da te nazove. Prikazuje se samo na /demo/<slug>. */
 export default function DemoBanner() {
   const c = useClient()
+  const bar = useRef(null)
 
-  // Razmak na dnu da fiksna traka ne prekriva footer.
+  // Razmak na dnu = stvarna visina trake (na mobitelu je viša) → footer nikad nije prekriven.
   useEffect(() => {
     const prev = document.body.style.paddingBottom
-    document.body.style.paddingBottom = '72px'
+    const fit = () => {
+      if (bar.current) document.body.style.paddingBottom = `${bar.current.offsetHeight}px`
+    }
+    fit()
+    const ro = new ResizeObserver(fit)
+    ro.observe(bar.current)
     return () => {
+      ro.disconnect()
       document.body.style.paddingBottom = prev
     }
   }, [])
+
   return (
-    <div className="demo-bar">
+    <div className="demo-bar" ref={bar}>
       <div className="demo-bar-inner">
         <span className="demo-bar-tag">Demo prijedlog</span>
+        {/* Ime bez prijedloga "za" — dugi nazivi ("Ordinacija dentalne medicine…") ne mijenjaju padež.
+            Na mobitelu se duži dio skriva da traka ne prekrije pola ekrana. */}
         <span className="demo-bar-txt">
-          Ovako bi mogla izgledati web stranica za <strong>{c.name}</strong> — izradio {AGENCY.brand}
+          <span className="demo-bar-long">
+            Ovako bi mogla izgledati vaša nova web stranica · <strong>{c.name}</strong> ·{' '}
+          </span>
+          izrada: {AGENCY.brand}
         </span>
         <a className="demo-bar-cta" href={`tel:${AGENCY.phoneHref}`}>
           Sviđa vam se? Nazovite {AGENCY.phone} →

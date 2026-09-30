@@ -21,14 +21,24 @@ export default function CursorFX() {
     let rx = mx
     let ry = my
     let magnetEl = null
+    let raf = 0
+
+    // transform umjesto left/top → bez layouta; prsten se animira samo dok ne sustigne miš
+    const place = (el, x, y) => {
+      if (el) el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`
+    }
+    const loop = () => {
+      rx += (mx - rx) * 0.18
+      ry += (my - ry) * 0.18
+      place(r, rx, ry)
+      raf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.2 ? requestAnimationFrame(loop) : 0
+    }
 
     const onMove = (e) => {
       mx = e.clientX
       my = e.clientY
-      if (d) {
-        d.style.left = mx + 'px'
-        d.style.top = my + 'px'
-      }
+      place(d, mx, my)
+      if (!raf) raf = requestAnimationFrame(loop)
 
       // magnetni gumbi
       const btn = e.target.closest && e.target.closest('.btn')
@@ -50,17 +60,8 @@ export default function CursorFX() {
       r && r.classList.toggle('active', !!interactive)
     }
 
-    let raf
-    const loop = () => {
-      rx += (mx - rx) * 0.18
-      ry += (my - ry) * 0.18
-      if (r) {
-        r.style.left = rx + 'px'
-        r.style.top = ry + 'px'
-      }
-      raf = requestAnimationFrame(loop)
-    }
-    loop()
+    place(d, mx, my)
+    place(r, rx, ry)
 
     window.addEventListener('mousemove', onMove)
     window.addEventListener('mouseover', onOver)

@@ -25,7 +25,7 @@ export default function TrustedBy() {
     <section className="trust-strip" aria-label="Partneri i certifikati">
       <div className="container">
         <FadeUp>
-          <p className="trust-cap">Partneri i brendovi s kojima surađujemo s povjerenjem</p>
+          <p className="trust-cap">Tehnologije i materijali kojima vjerujemo</p>
         </FadeUp>
       </div>
       <div className="trust-marquee">

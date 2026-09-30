@@ -2,6 +2,7 @@ import { useState } from 'react'
 import FadeUp from '../components/FadeUp.jsx'
 import { Icon } from '../components/icons.jsx'
 import { useClient } from '../client/ClientContext.jsx'
+import { fmtDate } from '../lib/format.js'
 
 const SERVICES = [
   'Estetska stomatologija',
@@ -18,11 +19,25 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', svc: '', msg: '', date: '' })
   const [sent, setSent] = useState(false)
 
+  const today = new Date().toISOString().split('T')[0]
   const upd = (k) => (e) => setForm({ ...form, [k]: e.target.value })
+
+  // Nema backenda — pripremi e-mail ordinaciji u korisnikovom mail programu.
   const submit = (e) => {
     e.preventDefault()
+    const lines = [
+      `Ime i prezime: ${form.name}`,
+      `Email: ${form.email}`,
+      form.phone && `Telefon: ${form.phone}`,
+      form.date && `Željeni termin: ${fmtDate(form.date)}`,
+      form.svc && `Usluga: ${form.svc}`,
+      form.msg && `\r\nPoruka:\r\n${form.msg}`,
+    ].filter(Boolean)
+    window.location.href =
+      `mailto:${c.contact.email}?subject=${encodeURIComponent(`Upit za termin — ${form.name}`)}` +
+      `&body=${encodeURIComponent(lines.join('\r\n'))}`
     setSent(true)
-    setTimeout(() => setSent(false), 4500)
+    setTimeout(() => setSent(false), 6000)
   }
 
   const mapQuery = encodeURIComponent(`${c.name}, ${c.contact.address}`)
@@ -48,7 +63,7 @@ export default function Contact() {
             </FadeUp>
             <FadeUp delay={0.1}>
               <h2 className="cnt-h2">
-                Zakaži termin
+                Zakažite termin
                 <br />
                 <em>već danas</em>
               </h2>
@@ -89,7 +104,7 @@ export default function Contact() {
                 </div>
                 <div className="fg">
                   <label>Željeni termin</label>
-                  <input type="date" value={form.date} onChange={upd('date')} />
+                  <input type="date" min={today} value={form.date} onChange={upd('date')} />
                 </div>
               </div>
               <div className="fg">
@@ -111,10 +126,10 @@ export default function Contact() {
                 />
               </div>
               {sent ? (
-                <div className="success-msg">✓ Hvala! Kontaktirat ćemo vas uskoro.</div>
+                <div className="success-msg">✓ Poruka je pripremljena u vašem e-mail programu — samo je pošaljite.</div>
               ) : (
                 <button type="submit" className="btn btn-gold" style={{ width: '100%', justifyContent: 'center' }}>
-                  Pošalji zahtjev →
+                  Pošaljite zahtjev →
                 </button>
               )}
             </form>

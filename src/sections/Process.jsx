@@ -1,7 +1,7 @@
 import FadeUp from '../components/FadeUp.jsx'
 
 const STEPS = [
-  ['01', 'Konzultacija', 'Upoznajemo vaše želje, analiziramo zdravlje zubi i zajedno definiramo cilj — bez obveze i potpuno besplatno.'],
+  ['01', 'Konzultacija', 'Upoznajemo vaše želje, odgovaramo na pitanja i zajedno definiramo cilj — prva konzultacija je besplatna i bez obveze.'],
   ['02', 'Digitalno skeniranje', '3D sken čeljusti i fotodokumentacija. Bez neugodnih otisaka — sve precizno, brzo i bezbolno.'],
   ['03', 'Smile Design', 'Dizajniramo vaš novi osmijeh digitalno i pokazujemo vam rezultat prije nego išta započnemo.'],
   ['04', 'Rezultat', 'Realizacija plana uz vrhunske materijale i kontrolne preglede — osmijeh koji traje godinama.'],

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import FadeUp from '../components/FadeUp.jsx'
 import { useClient } from '../client/ClientContext.jsx'
+import { fmtDate } from '../lib/format.js'
 
 const SERVICES = [
   'Pregled i konzultacija',
@@ -22,18 +23,20 @@ export default function QuickBook() {
 
   const submit = (e) => {
     e.preventDefault()
-    const msg =
-      `Pozdrav, želio/la bih rezervirati termin.%0A` +
-      `Usluga: ${encodeURIComponent(service)}%0A` +
-      (date ? `Željeni datum: ${encodeURIComponent(date)}%0A` : '') +
-      (name ? `Ime: ${encodeURIComponent(name)}` : '')
-    const digits = (c.contact.phoneHref || '').replace(/[^0-9]/g, '')
-    if (digits) {
-      window.open(`https://wa.me/${digits}?text=${msg}`, '_blank')
+    const lines = [
+      'Pozdrav, želio/la bih rezervirati termin.',
+      `Usluga: ${service}`,
+      date && `Željeni datum: ${fmtDate(date)}`,
+      name && `Ime: ${name}`,
+    ].filter(Boolean)
+    const digits = (c.contact.phoneHref || '').replace(/\D/g, '')
+    // WhatsApp samo za mobilne brojeve (+385 9x) — fiksni telefon nema WhatsApp, pa ide e-mail.
+    if (/^3859\d/.test(digits)) {
+      window.open(`https://wa.me/${digits}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener')
     } else {
-      window.location.href = `mailto:${c.contact.email}?subject=${encodeURIComponent(
-        'Rezervacija termina'
-      )}&body=${msg.replace(/%0A/g, '%0D%0A')}`
+      window.location.href =
+        `mailto:${c.contact.email}?subject=${encodeURIComponent('Rezervacija termina')}` +
+        `&body=${encodeURIComponent(lines.join('\r\n'))}`
     }
   }
 
@@ -73,7 +76,7 @@ export default function QuickBook() {
                 <input type="text" placeholder="Vaše ime" value={name} onChange={(e) => setName(e.target.value)} />
               </label>
               <button type="submit" className="btn btn-gold qb-submit">
-                Pošalji upit →
+                Pošaljite upit →
               </button>
             </form>
           </div>

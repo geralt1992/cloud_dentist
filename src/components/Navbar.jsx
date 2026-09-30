@@ -72,11 +72,11 @@ export default function Navbar() {
             ))}
             <li>
               <SmartLink to="/#kontakt" className="nav-cta btn">
-                Rezerviraj
+                Rezervirajte
               </SmartLink>
             </li>
           </ul>
-          <button className="ham" onClick={() => setOpen(!open)} aria-label="Menu">
+          <button className="ham" onClick={() => setOpen(!open)} aria-label="Izbornik" aria-expanded={open}>
             <span style={{ transform: open ? 'rotate(45deg) translate(4.5px,4.5px)' : 'none' }} />
             <span style={{ opacity: open ? 0 : 1 }} />
             <span style={{ transform: open ? 'rotate(-45deg) translate(4.5px,-4.5px)' : 'none' }} />
@@ -84,7 +84,7 @@ export default function Navbar() {
         </div>
       </nav>
       <div className={`mob-nav${open ? ' open' : ''}`}>
-        <button className="mob-close" onClick={() => setOpen(false)}>
+        <button className="mob-close" onClick={() => setOpen(false)} aria-label="Zatvori izbornik">
           ×
         </button>
         {LINKS.map(([l, h]) => (
@@ -93,7 +93,7 @@ export default function Navbar() {
           </SmartLink>
         ))}
         <SmartLink to="/#kontakt" className="btn btn-gold" onClick={() => setOpen(false)} style={{ marginTop: 12 }}>
-          Rezerviraj termin →
+          Rezervirajte termin →
         </SmartLink>
       </div>
     </>

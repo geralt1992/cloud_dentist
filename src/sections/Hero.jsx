@@ -1,9 +1,11 @@
 import FadeUp from '../components/FadeUp.jsx'
 import SmartLink from '../components/SmartLink.jsx'
 import { useClient } from '../client/ClientContext.jsx'
+import { fmtNum, highlightStat } from '../lib/format.js'
 
 export default function Hero() {
   const c = useClient()
+  const hl = highlightStat(c)
   return (
     <section className="hero" id="home">
       <div className="hero-bg" />
@@ -39,7 +41,7 @@ export default function Hero() {
           <FadeUp delay={0.32}>
             <div className="hero-acts">
               <SmartLink to="/#kontakt" className="btn btn-gold">
-                Zakaži pregled →
+                Zakažite pregled →
               </SmartLink>
               <SmartLink to="/#usluge" className="btn btn-outline">
                 Naše usluge
@@ -49,13 +51,13 @@ export default function Hero() {
           <FadeUp delay={0.42}>
             <div className="hero-trust">
               <div className="hero-stat">
-                <strong>4.9<span className="hero-star">★</span></strong>
+                <strong>{fmtNum(c.rating)}<span className="hero-star">★</span></strong>
                 <span>Prosječna ocjena</span>
               </div>
               <div className="hero-trust-div" />
               <div className="hero-stat">
-                <strong>{c.yearsTag}</strong>
-                <span>{c.yearsLabel}</span>
+                <strong>{hl.value}</strong>
+                <span>{hl.label}</span>
               </div>
               <div className="hero-trust-div" />
               <div className="hero-stat">

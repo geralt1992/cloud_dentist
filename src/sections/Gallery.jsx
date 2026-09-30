@@ -1,12 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
 import FadeUp from '../components/FadeUp.jsx'
+import Img from '../components/Img.jsx'
+import { pexels } from '../lib/img.js'
 
+/* Svaki opis provjeren prema onome što je stvarno na slici.
+   Redoslijed prati mrežu: 1 i 5 široke, 2 i 4 uske, 3 visoka (portret). */
 const IMAGES = [
-  ['https://images.pexels.com/photos/3881449/pexels-photo-3881449.jpeg?auto=compress&cs=tinysrgb&w=900', 'Moderna ordinacija'],
-  ['https://images.pexels.com/photos/3845810/pexels-photo-3845810.jpeg?auto=compress&cs=tinysrgb&w=600', 'Stručni pregled'],
-  ['https://images.pexels.com/photos/4269694/pexels-photo-4269694.jpeg?auto=compress&cs=tinysrgb&w=800', 'Savršen osmijeh'],
-  ['https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=700', 'Sretna pacijentica'],
-  ['https://images.pexels.com/photos/3762940/pexels-photo-3762940.jpeg?auto=compress&cs=tinysrgb&w=900', 'Tim stručnjaka'],
+  { src: pexels(6812453), alt: 'Moderna ordinacija', sizes: '(max-width: 768px) 50vw, 540px' },
+  { src: pexels(3881449), alt: 'Pažljiv pregled', sizes: '(max-width: 768px) 50vw, 330px' },
+  { src: pexels(6554598), alt: 'Blistav osmijeh', sizes: '(max-width: 768px) 100vw, 440px' },
+  { src: pexels(3845810), alt: 'Opuštena atmosfera', sizes: '(max-width: 768px) 50vw, 330px', pos: '25% 50%' },
+  { src: pexels(5355903), alt: 'Timski rad', sizes: '(max-width: 768px) 50vw, 540px' },
 ]
 
 export default function Gallery() {
@@ -56,23 +60,30 @@ export default function Gallery() {
           </h2>
         </FadeUp>
         <FadeUp delay={0.18}>
-          <p className="gal-sub">Svaki osmijeh je jedinstvena priča. Pogledajte dio naših transformacija.</p>
+          <p className="gal-sub">Moderan prostor, vrhunska oprema i tim koji brine o svakom detalju.</p>
         </FadeUp>
       </div>
       <FadeUp delay={0.26}>
         <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 clamp(20px,5vw,60px)' }}>
           <div className="gal-grid">
-            {IMAGES.map(([src, alt], i) => (
+            {IMAGES.map((img, i) => (
               <button
                 type="button"
                 className="gi"
-                key={i}
+                key={img.alt}
                 onClick={() => setActive(i)}
-                aria-label={`Otvori sliku: ${alt}`}
+                aria-label={`Otvori sliku: ${img.alt}`}
               >
-                <img src={src} alt={alt} loading="lazy" />
+                <Img
+                  src={img.src}
+                  widths={[400, 700, 1100]}
+                  sizes={img.sizes}
+                  alt={img.alt}
+                  loading="lazy"
+                  style={img.pos ? { objectPosition: img.pos } : undefined}
+                />
                 <div className="gi-ov">
-                  <span>{alt}</span>
+                  <span>{img.alt}</span>
                   <span className="gi-zoom">⤢</span>
                 </div>
               </button>
@@ -86,8 +97,8 @@ export default function Gallery() {
           <button className="lbox-close" onClick={close} aria-label="Zatvori">×</button>
           <button className="lbox-nav lbox-prev" onClick={prev} aria-label="Prethodna">‹</button>
           <figure className="lbox-fig" onClick={(e) => e.stopPropagation()}>
-            <img src={IMAGES[active][0]} alt={IMAGES[active][1]} />
-            <figcaption>{IMAGES[active][1]}</figcaption>
+            <Img src={IMAGES[active].src} widths={[800, 1300, 1900]} sizes="90vw" alt={IMAGES[active].alt} />
+            <figcaption>{IMAGES[active].alt}</figcaption>
           </figure>
           <button className="lbox-nav lbox-next" onClick={next} aria-label="Sljedeća">›</button>
           <span className="lbox-count">{active + 1} / {IMAGES.length}</span>

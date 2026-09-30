@@ -14,6 +14,8 @@ html.lenis,html.lenis body{height:auto}
    čini ga vidljivim uglavnom na tamnim plohama, skida "plastični" dojam. */
 .grain{position:fixed;inset:0;z-index:1400;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)'/%3E%3C/svg%3E");background-size:220px 220px}
 @media (prefers-reduced-motion:reduce){.grain{opacity:.04}}
+/* Na mobitelu se zrno na 5 % ne vidi, a blend sloj preko cijelog ekrana usporava skrolanje */
+@media (hover:none),(pointer:coarse){.grain{display:none}}
 
 /* ─── SCROLL PROGRESS (tanka zlatna crta na vrhu) ─── */
 .scroll-prog{position:fixed;top:0;left:0;right:0;height:3px;z-index:2000;background:transparent;pointer-events:none}
@@ -29,9 +31,6 @@ html.lenis,html.lenis body{height:auto}
 @media (pointer:fine){.has-cursor-fx,.has-cursor-fx a,.has-cursor-fx button,.has-cursor-fx .gi,.has-cursor-fx [role="slider"]{cursor:none}}
 .btn{transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .3s,background .3s,color .3s,border-color .3s}
 
-/* Animacija s cjenika (čestice + prsteni) na naslovnom hero — iznad pozadine, ispod sadržaja */
-.hero #hero-canvas{z-index:1}
-
 /* 3D tilt kartice */
 .svc-card,.team-card{will-change:transform}
 
@@ -41,7 +40,9 @@ html.lenis,html.lenis body{height:auto}
 .hero-name-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2.4vw,1.75rem);font-weight:600;letter-spacing:.05em;color:var(--cream);text-shadow:0 2px 18px rgba(0,0,0,.5)}
 
 /* ─── HERO animirana pozadina (spori zoom) ─── */
-.hero-bg{position:absolute;inset:0;z-index:0;background:url('https://images.pexels.com/photos/6809642/pexels-photo-6809642.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat;opacity:.16;filter:grayscale(.25) brightness(.8);animation:heroZoom 22s ease-in-out infinite alternate;transform-origin:60% 40%}
+/* Ista slika (i iste širine) predučitava se u index.html — mijenjaj oboje zajedno */
+.hero-bg{position:absolute;inset:0;z-index:0;background:url('https://images.pexels.com/photos/6809642/pexels-photo-6809642.jpeg?auto=compress&cs=tinysrgb&w=1280') center/cover no-repeat;opacity:.16;filter:grayscale(.25) brightness(.8);animation:heroZoom 22s ease-in-out infinite alternate;transform-origin:60% 40%}
+@media (max-width:768px){.hero-bg{background-image:url('https://images.pexels.com/photos/6809642/pexels-photo-6809642.jpeg?auto=compress&cs=tinysrgb&w=800')}}
 @keyframes heroZoom{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.28) translate(-3%,-2%)}}
 @media (prefers-reduced-motion:reduce){.hero-bg{animation:none}}
 
@@ -65,7 +66,10 @@ html.lenis,html.lenis body{height:auto}
 .ba-wrap{position:relative;max-width:920px;margin:0 auto;aspect-ratio:16/10;border-radius:4px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);user-select:none;touch-action:pan-y;outline:none}
 .ba-wrap:focus-visible{box-shadow:0 0 0 2px var(--gold),0 40px 90px -30px rgba(0,0,0,.8)}
 .ba-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.ba-before{will-change:clip-path}
+.ba-before-clip{position:absolute;inset:0;z-index:1;will-change:clip-path}
+/* vlastiti sloj → filtrirana slika se ne preračunava pri svakom pomaku kliznika */
+.ba-before{filter:url(#ba-stain);will-change:transform}
+.ba-note{text-align:center;margin-top:14px;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:.75}
 .ba-tag{position:absolute;top:18px;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:6px 14px;background:rgba(8,12,18,.65);backdrop-filter:blur(6px);color:#fff;border:1px solid rgba(255,255,255,.15);z-index:3}
 .ba-tag-before{left:18px}
 .ba-tag-after{right:18px;color:var(--gold);border-color:rgba(200,165,106,.4)}
@@ -143,6 +147,7 @@ html.lenis,html.lenis body{height:auto}
 .ftr-ic svg{width:15px;height:15px}
 .ftr-contact li:hover .ftr-ic{background:var(--gold);color:var(--dark);border-color:var(--gold)}
 .ftr-contact a{padding-top:5px}
+.ftr-hours{color:var(--muted);font-size:.82rem;padding-top:5px}
 /* Društvene mreže — okrugle, zlatni hover umjesto ružnih kvadrata */
 .ftr-soc{gap:10px}
 .ftr-si{width:38px;height:38px;border-radius:50%;border:1px solid rgba(200,165,106,.22);color:var(--muted);background:rgba(255,255,255,.02);transition:all .3s}

@@ -34,7 +34,7 @@ export default function Packages() {
                 ))}
               </ul>
               <Link to="/#kontakt" className={`btn btn-sm ${p.feat ? 'btn-gold' : 'btn-outline'}`}>
-                Rezerviraj →
+                Rezervirajte →
               </Link>
             </div>
           </FadeUp>

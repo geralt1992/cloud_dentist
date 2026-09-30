@@ -13,7 +13,7 @@ export default function FloatCTA({ threshold = 600 }) {
 
   return (
     <div className={`float-cta${show ? ' show' : ''}`}>
-      <Link to="/#kontakt">📅 Zakaži →</Link>
+      <Link to="/#kontakt">📅 Zakažite →</Link>
     </div>
   )
 }

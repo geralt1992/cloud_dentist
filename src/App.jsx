@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route, useParams } from 'react-router-dom'
 import ScrollToHash from './components/ScrollToHash.jsx'
 import SmoothScroll from './components/SmoothScroll.jsx'
@@ -6,7 +7,9 @@ import CursorFX from './components/CursorFX.jsx'
 import { ClientProvider } from './client/ClientContext.jsx'
 import { getClient } from './data/clients.js'
 import Home from './pages/Home.jsx'
-import Cijenik from './pages/Cijenik.jsx'
+
+// Cjenik (i three.js koji koristi) učitava se tek kad se otvori — naslovnica i demoi ostaju lagani.
+const Cijenik = lazy(() => import('./pages/Cijenik.jsx'))
 
 /* Personalizirana demo stranica za jednog klijenta: /demo/<slug> */
 function DemoPage() {
@@ -28,7 +31,14 @@ export default function App() {
       <div className="grain" aria-hidden="true" />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/cijenik" element={<Cijenik />} />
+        <Route
+          path="/cijenik"
+          element={
+            <Suspense fallback={null}>
+              <Cijenik />
+            </Suspense>
+          }
+        />
         <Route path="/demo/:slug" element={<DemoPage />} />
       </Routes>
     </ClientProvider>

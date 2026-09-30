@@ -15,25 +15,31 @@ npm run preview  # pregled produkcijskog builda
 ## Struktura
 
 ```
-index.html               Vite entry (fontovi + #root)
+index.html               Vite entry (meta/OG, favicon, fontovi, predučitavanje hero slike)
+vite.config.js           + generira dist/demo/<slug>.html (naslov za pregled linka)
 src/
   main.jsx               renderira aplikaciju + router
-  App.jsx                rute: / (početna) i /cijenik
+  App.jsx                rute: / (početna), /cijenik (lazy) i /demo/:slug
   styles/global.css      svi stilovi (varijable boja na vrhu u :root)
-  components/            dijeljene komponente (Navbar, Footer, FadeUp, ...)
-    HeroCanvas.jsx       3D animacija na početnoj (three.js)
-    PricingHeroCanvas.jsx 3D čestice na cjeniku
+  styles/enhance.css     "wow" dodaci (kursor, zrno, tim, prije/poslije...)
+  components/            dijeljene komponente (Navbar, Footer, FadeUp, Img, ...)
+    Img.jsx              <img> sa srcset-om za Pexels slike (mobitel skida manju)
+    PricingHeroCanvas.jsx 3D čestice na cjeniku (three.js, učitava se tek na /cijenik)
     ScrollToHash.jsx     glatko skrolanje na #sekciju kod navigacije
   sections/              sekcije početne stranice (Hero, Stats, Services, ...)
     cijenik/             komponente stranice cjenika
+  lib/                   format.js (hrv. brojevi/datumi), img.js (Pexels URL-ovi)
   data/
+    clients.js           default podaci + personalizirani demo klijenti
     pricing.js           SVI podaci o cijenama, paketima i FAQ-u
 ```
 
 ## Gdje što mijenjati
 
-- **Cijene / paketi / FAQ** → `src/data/pricing.js`
-- **Usluge, recenzije, galerija, kontakt** → podaci su na vrhu pripadajuće
+- **Doktor, kontakt, brojke, tim (po klijentu)** → `src/data/clients.js`
+  (vidi tablicu polja u `DEMO_GUIDE.md`)
+- **Cijene / paketi / FAQ** → `src/data/pricing.js` — paketi se prikazuju i na naslovnici
+- **Usluge, recenzije, galerija** → podaci su na vrhu pripadajuće
   komponente u `src/sections/`
 - **Boje i tipografija** → CSS varijable u `:root` na vrhu `src/styles/global.css`
 - **Navigacija / linkovi** → `src/components/Navbar.jsx`

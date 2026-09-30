@@ -4,33 +4,67 @@
    Svaki klijent dobije svoj link: /demo/<slug>  (slug = ključ u CLIENTS objektu)
    Npr. "smile-design-kovac" → tvoj-site.vercel.app/demo/smile-design-kovac
 
-   U svakom unosu navedeš SAMO ono što se razlikuje od DEFAULT_CLIENT-a.
+   U svakom unosu navedeš SAMO ono što se razlikuje od BASE podataka.
    Sve ostalo (usluge, galerija, recenzije...) ostaje generičko i izgleda dobro.
+
+   Važno za usklađenost teksta i slika:
+   - gender: 'm' | 'f'  → bira fotografiju voditelja/ice i rod u tekstu
+     ("Voditelj/Voditeljica ordinacije"). Vlastitu fotku postavi poljem `photo`.
+   - cityIn / cityOf    → grad u padežima: "u Osijeku" / "iz Osijeka".
+   - patients / years   → brojke u heroju, "O nama" i statistici (uvijek iste).
+     highlight: 'years' | 'patients' → koja se od njih ističe u heroju.
+   - team               → ostali članovi tima (umjesto generičkih placeholdera).
    ───────────────────────────────────────────────────────────────────────── */
 
-export const DEFAULT_CLIENT = {
-  slug: 'dentart',
+import { pexels } from '../lib/img.js'
+
+/* Stock fotografije provjerene da odgovaraju spolu i da na odjeći nema tuđeg imena/loga. */
+const DOCTOR_PHOTOS = { m: pexels(6812464), f: pexels(5355864) }
+const TEAM_PHOTOS = { m: pexels(6627836), f: pexels(19332236) }
+
+const BASE = {
   name: 'DentArt',
   logoSub: 'Premium Studio',
-  city: 'Zagreb',
+  city: 'Osijek',
+  cityIn: 'Osijeku',
+  cityOf: 'Osijeka',
   // Hero
   heroBadge: 'Osijek · Otvoreno 6 dana tjedno',
+  // Brojke (hero, "O nama", statistika, Google značka)
+  patients: 2500,
+  years: 15,
+  highlight: 'years',
+  rating: 4.9,
+  reviewCount: 120,
   // O nama
-  doctor: 'Dr. Ana Kovač',
-  yearsTag: '15+',
-  yearsLabel: 'Godina iskustva',
-  photo: 'https://images.pexels.com/photos/17792882/pexels-photo-17792882.jpeg?auto=compress&cs=tinysrgb&w=800',
+  doctor: 'dr. med. dent. Marko Vuković',
+  gender: 'm',
   bio: [
-    'S više od 15 godina iskustva u estetskoj i rekonstruktivnoj stomatologiji, dr. Ana Kovač vodi DentArt Studio s misijom pružanja personalizirane skrbi svakome tko nam pokloni povjerenje.',
-    'Obrazovana na Stomatološkom fakultetu u Zagrebu i usavršena u Beču i Parizu, redovito pohađa međunarodne kongrese te uvodi najsuvremenije metode u svoju praksu.',
+    'S više od 15 godina iskustva u estetskoj i rekonstruktivnoj stomatologiji, dr. Marko Vuković vodi DentArt Studio s misijom pružanja personalizirane skrbi svakome tko nam pokloni povjerenje.',
+    'Diplomirao je na Stomatološkom fakultetu u Zagrebu, a usavršavao se u Beču i Parizu. Redovito pohađa međunarodne kongrese i u praksu uvodi najsuvremenije metode.',
+  ],
+  // Ostatak tima — generički placeholderi (zamijeni stvarnim timom po klijentu)
+  team: [
+    {
+      name: 'dr. med. dent. Iva Marić',
+      gender: 'f',
+      role: 'Implantologija',
+      detail: 'Usmjerena na zubne implantate i oralnu kirurgiju, uz naglasak na nježne i bezbolne tehnike.',
+    },
+    {
+      name: 'dr. med. dent. Luka Novak',
+      gender: 'm',
+      role: 'Ortodoncija',
+      detail: 'Invisalign i fiksni aparati — ravnanje zuba prilagođeno svakom pacijentu i njegovom ritmu života.',
+    },
   ],
   // Kontakt + footer
   contact: {
-    address: 'Ilica 45, 10000 Zagreb',
-    phone: '+385 1 234 5678',
-    phoneHref: '+38512345678',
+    address: 'Kapucinska 20, 31000 Osijek',
+    phone: '+385 31 123 456',
+    phoneHref: '+38531123456',
     email: 'info@dentart.hr',
-    hours: 'Pon–Sub: 8:00 – 20:00',
+    hours: 'Pon–Sub: 8:00–20:00',
   },
 }
 
@@ -40,11 +74,11 @@ export const CLIENTS = {
   'smile-design-kovac': {
     name: 'Smile Design Kovač',
     logoSub: 'Stomatološka ordinacija',
-    city: 'Osijek',
-    heroBadge: 'Osijek · Više od 5.000 zadovoljnih pacijenata',
+    heroBadge: 'Osijek · Estetska stomatologija i implantologija',
     doctor: 'dr. med. dent. Željko Kovač',
-    yearsTag: '5000+',
-    yearsLabel: 'Zadovoljnih pacijenata',
+    gender: 'm',
+    patients: 5000,
+    highlight: 'patients',
     bio: [
       'Stomatološku ordinaciju Smile Design Kovač u Osijeku vodi dr. med. dent. Željko Kovač, spajajući inspiraciju, strast i individualan pristup svakom pacijentu.',
       'Uz modernu opremu i minimalno invazivan pristup, ordinacija pokriva sve — od estetske stomatologije i implantologije do dječje stomatologije — s više od 5.000 zadovoljnih pacijenata.',
@@ -60,24 +94,42 @@ export const CLIENTS = {
 
   // ───────── KLIJENT 2 — Dentalni implantološki centar Osijek ─────────
   // Izvor: https://implantati-osijek.eu/   → /demo/implantati-osijek
+  // Dr. Đukić je muškarac ("Tim s njim na čelu" na njihovoj stranici).
   'implantati-osijek': {
     name: 'Dentalni implantološki centar Osijek',
     logoSub: 'Implantologija i estetska stomatologija',
-    city: 'Osijek',
-    heroBadge: 'Osijek · Ocjena 4.7 ★ · Tim specijalista',
-    doctor: 'Dr. Saša Đukić',
-    yearsTag: '3000+',
-    yearsLabel: 'Zadovoljnih pacijenata',
+    heroBadge: 'Osijek · Iskusan tim stručnjaka',
+    doctor: 'dr. med. dent. Saša Đukić',
+    gender: 'm',
+    leadRole: 'Voditelj centra',
+    patients: 3000,
+    highlight: 'patients',
+    rating: 4.7,
     bio: [
       'Tim Dentalnog implantološkog centra Osijek čine iskusni i profesionalni stručnjaci — dr. Saša Đukić, dr. Lorena Horvat i dr. Nikola Joakim Đitko — koji kontinuirano usavršavaju svoje znanje.',
-      'Specijalizirani za implantologiju i estetsku stomatologiju, centar pruža cjelovitu skrb uz vrhunsku opremu i prosječnu ocjenu 4.7 zvjezdica zadovoljnih pacijenata.',
+      'Specijaliziran za implantologiju i estetsku stomatologiju, centar pruža cjelovitu skrb uz vrhunsku opremu, a pacijenti ga u prosjeku ocjenjuju s 4,7 zvjezdica.',
+    ],
+    // stvarni tim s njihove stranice (uloge nisu navedene — provjeri)
+    team: [
+      {
+        name: 'dr. med. dent. Lorena Horvat',
+        gender: 'f',
+        role: 'Doktorica dentalne medicine',
+        detail: 'Implantologija i estetska stomatologija, uz individualan pristup svakom pacijentu.',
+      },
+      {
+        name: 'dr. med. dent. Nikola Joakim Đitko',
+        gender: 'm',
+        role: 'Doktor dentalne medicine',
+        detail: 'Moderna dentalna medicina — od preventive do složenih protetskih rješenja.',
+      },
     ],
     contact: {
       address: 'Ul. Otokara Keršovanija 10A, 31000 Osijek',
       phone: '+385 31 495 025',
       phoneHref: '+38531495025',
       email: 'info@implantati-osijek.eu',
-      hours: 'Radno vrijeme: ___', // nije navedeno na njihovoj stranici — provjeri
+      hours: 'Pon, Sri, Pet: 7:00–14:30 · Uto, Čet: 13:00–20:30', // s mojausluga.hr — provjeri
     },
   },
 
@@ -86,11 +138,12 @@ export const CLIENTS = {
   'dental-pollak': {
     name: 'Dental Centar Pollak',
     logoSub: 'Ortodoncija i estetska stomatologija',
-    city: 'Osijek',
     heroBadge: 'Osijek · Specijalist ortodoncije',
-    doctor: 'Dr. Darko Pollak',
-    yearsTag: '20+',
-    yearsLabel: 'Godina iskustva',
+    doctor: 'dr. med. dent. Darko Pollak',
+    gender: 'm',
+    leadRole: 'Specijalist ortodoncije',
+    leadDetail: 'Ravni zubi i skladan zagriz uz dugogodišnje iskustvo i najmoderniju tehnologiju.',
+    years: 20,
     bio: [
       'Dental Centar Pollak u Osijeku vodi dr. Darko Pollak, specijalist ortodoncije, spajajući dugogodišnje iskustvo, vrhunsku stručnost i najmoderniju tehnologiju.',
       'Od implantologije i estetske stomatologije do redovite skrbi — centar je posvećen bezbolnoj terapiji i izvrsnim rezultatima za svakog pacijenta.',
@@ -109,13 +162,9 @@ export const CLIENTS = {
   'dental-malogorski': {
     name: 'Ordinacija dentalne medicine Andrea Malogorski Šimašek',
     logoSub: 'Dentalna medicina',
-    city: 'Osijek',
     heroBadge: 'Osijek · Vaš osmijeh u sigurnim rukama',
     doctor: 'dr. med. dent. Andrea Malogorski Šimašek',
-    // ženska doktorica → ženska fotografija (muška default ne odgovara)
-    photo: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=800',
-    yearsTag: '15+',
-    yearsLabel: 'Godina iskustva',
+    gender: 'f',
     bio: [
       'Ordinaciju dentalne medicine u Osijeku vodi dr. med. dent. Andrea Malogorski Šimašek, posvećena pažljivom i individualnom pristupu svakom pacijentu.',
       'Od redovite preventive i restaurativne stomatologije do estetskih zahvata — cilj je zdrav, prirodan i samouvjeren osmijeh u ugodnoj i opuštenoj atmosferi.',
@@ -135,11 +184,11 @@ export const CLIENTS = {
     name: 'Privatna ordinacija dentalne medicine Ines Baždar Spajić',
     logoSub: 'Implantologija i estetska stomatologija',
     city: 'Đakovo',
+    cityIn: 'Đakovu',
+    cityOf: 'Đakova',
     heroBadge: 'Đakovo · Implantati i estetska stomatologija',
     doctor: 'dr. med. dent. Ines Baždar Spajić',
-    photo: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=800',
-    yearsTag: '15+',
-    yearsLabel: 'Godina iskustva',
+    gender: 'f',
     bio: [
       'Privatnu ordinaciju dentalne medicine u Đakovu vodi dr. med. dent. Ines Baždar Spajić, uz najsuvremenije tehnologije i materijale te individualan pristup svakom pacijentu.',
       'Ordinacija pokriva opću i estetsku stomatologiju te implantologiju, a uz brzu i jednostavnu ortopan snimku sve je na jednom mjestu — bez nepotrebnog čekanja i putovanja.',
@@ -149,7 +198,7 @@ export const CLIENTS = {
       phone: '+385 31 300 221', // s javnih imenika — provjeri
       phoneHref: '+38531300221',
       email: 'ordinacija_bazdar@yahoo.com',
-      hours: 'Radno vrijeme: ___', // nije javno navedeno — provjeri
+      hours: 'Termini po dogovoru · nazovite nas', // pravo radno vrijeme nije javno — provjeri
     },
   },
 
@@ -159,10 +208,11 @@ export const CLIENTS = {
     name: 'Ordinacija dentalne medicine Ivan Francem',
     logoSub: 'Dentalna medicina · Đakovo',
     city: 'Đakovo',
+    cityIn: 'Đakovu',
+    cityOf: 'Đakova',
     heroBadge: 'Đakovo · Cjelovita dentalna skrb na jednom mjestu',
     doctor: 'dr. med. dent. Ivan Francem',
-    yearsTag: '15+',
-    yearsLabel: 'Godina iskustva',
+    gender: 'm',
     bio: [
       'Ordinaciju dentalne medicine u srcu Đakova vodi dr. med. dent. Ivan Francem, pružajući visokokvalitetnu dentalnu skrb uz individualan pristup svakom pacijentu.',
       'Od protetike, ortodoncije i parodontologije do endodoncije, oralne kirurgije i estetskih zahvata (bijeljenje, pjeskarenje) — sve usluge dostupne su na jednom mjestu.',
@@ -177,14 +227,25 @@ export const CLIENTS = {
   },
 }
 
+/* Popuni fotografije prema spolu (ako nisu zadane ručno) — ime i slika uvijek se slažu. */
+function finalize(c) {
+  return {
+    ...c,
+    photo: c.photo || DOCTOR_PHOTOS[c.gender] || DOCTOR_PHOTOS.m,
+    team: c.team.map((m) => ({ ...m, photo: m.photo || TEAM_PHOTOS[m.gender] || TEAM_PHOTOS.m })),
+  }
+}
+
+export const DEFAULT_CLIENT = finalize({ ...BASE, slug: 'dentart' })
+
 /* Vrati podatke klijenta po slugu, popunjene defaultima za sve što nije navedeno. */
 export function getClient(slug) {
   const c = slug && CLIENTS[slug]
   if (!c) return DEFAULT_CLIENT
-  return {
-    ...DEFAULT_CLIENT,
+  return finalize({
+    ...BASE,
     ...c,
     slug,
-    contact: { ...DEFAULT_CLIENT.contact, ...(c.contact || {}) },
-  }
+    contact: { ...BASE.contact, ...(c.contact || {}) },
+  })
 }

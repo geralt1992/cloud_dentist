@@ -1,31 +1,11 @@
 import FadeUp from '../components/FadeUp.jsx'
 import SmartLink from '../components/SmartLink.jsx'
+import { useClient } from '../client/ClientContext.jsx'
+import { PACKAGES } from '../data/pricing.js'
 
-const PLANS = [
-  {
-    nm: 'Osnovno',
-    pr: 'Od 80€',
-    pd: 'po pregledu',
-    feat: false,
-    fs: ['Preventivni pregled', 'Rendgenski snimak', 'Čišćenje zubnog kamenca', 'Savjetovanje', 'Plan terapije'],
-  },
-  {
-    nm: 'Premium',
-    pr: 'Od 250€',
-    pd: 'po tretmanu',
-    feat: true,
-    fs: ['Sve iz Osnovno paketa', 'Profesionalno bijeljenje', 'Estetsko punjenje', 'Prioritetno zakazivanje', '6-mj. kontrolni pregled'],
-  },
-  {
-    nm: 'Smile Design',
-    pr: 'Po dogovoru',
-    pd: 'individualni plan',
-    feat: false,
-    fs: ['Digitalni smile design', 'Kompletna rekonstrukcija', 'Implantati / furnir', 'Keramičke krunice', 'Doživotna garancija'],
-  },
-]
-
+/* Isti paketi kao na stranici /cijenik (src/data/pricing.js) — nazivi i cijene se ne razilaze. */
 export default function Pricing() {
+  const { isDemo } = useClient()
   return (
     <section className="prc-sec section" id="cijene">
       <div className="container">
@@ -44,16 +24,16 @@ export default function Pricing() {
           </FadeUp>
         </div>
         <div className="prc-grid">
-          {PLANS.map((p, i) => (
-            <FadeUp key={i} delay={i * 0.14}>
+          {PACKAGES.map((p, i) => (
+            <FadeUp key={p.nm} delay={i * 0.14}>
               <div className={`prc-card${p.feat ? ' feat' : ''}`}>
                 {p.feat && <div className="prc-badge">Najpopularnije</div>}
                 <div className="prc-nm">{p.nm}</div>
-                <div className="prc-pr">{p.pr}</div>
-                <div className="prc-pd">{p.pd}</div>
+                <div className="prc-pr">{p.price}</div>
+                <div className="prc-pd">{p.period}</div>
                 <ul className="prc-feats">
-                  {p.fs.map((f, j) => (
-                    <li key={j}>{f}</li>
+                  {p.fs.map((f) => (
+                    <li key={f}>{f}</li>
                   ))}
                 </ul>
                 <SmartLink
@@ -61,17 +41,20 @@ export default function Pricing() {
                   className={`btn ${p.feat ? 'btn-gold' : 'btn-outline'}`}
                   style={{ display: 'block', textAlign: 'center', justifyContent: 'center' }}
                 >
-                  Rezerviraj →
+                  Rezervirajte →
                 </SmartLink>
               </div>
             </FadeUp>
           ))}
         </div>
-        <FadeUp delay={0.2} style={{ textAlign: 'center', marginTop: 48 }}>
-          <SmartLink to="/cijenik" className="btn btn-outline">
-            Pogledaj cijeli cjenik →
-          </SmartLink>
-        </FadeUp>
+        {/* Demo je jedna stranica — zasebni cjenik postoji samo na pravom sajtu */}
+        {!isDemo && (
+          <FadeUp delay={0.2} style={{ textAlign: 'center', marginTop: 48 }}>
+            <SmartLink to="/cijenik" className="btn btn-outline">
+              Pogledajte cijeli cjenik →
+            </SmartLink>
+          </FadeUp>
+        )}
       </div>
     </section>
   )

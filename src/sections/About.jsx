@@ -1,18 +1,22 @@
 import FadeUp from '../components/FadeUp.jsx'
 import SmartLink from '../components/SmartLink.jsx'
+import Img from '../components/Img.jsx'
 import { useClient } from '../client/ClientContext.jsx'
+import { highlightStat } from '../lib/format.js'
 
+// Rodno neutralno — isti popis stoji uz doktora i uz doktoricu.
 const FEATURES = [
-  'Specijalist estetske stomatologije',
-  'Certificirana za Digital Smile Design',
-  'Laser stomatologija',
+  'Estetska stomatologija i Digital Smile Design',
+  'Laserska stomatologija',
   'Bezbolna terapija',
   'Sedacija za anksiozne pacijente',
-  'Digitalni rendgen (niža doza)',
+  'Digitalni RTG (niža doza zračenja)',
+  '3D skeniranje bez otisaka',
 ]
 
 export default function About() {
   const c = useClient()
+  const hl = highlightStat(c)
   return (
     <section className="abt section" id="o-nama">
       <div className="container">
@@ -20,10 +24,17 @@ export default function About() {
           <FadeUp>
             <div className="abt-img-wrap" style={{ paddingBottom: 28, paddingRight: 18 }}>
               <div className="abt-frame" />
-              <img src={c.photo} alt={c.doctor} className="abt-img" loading="lazy" />
+              <Img
+                src={c.photo}
+                widths={[500, 800, 1100]}
+                sizes="(max-width: 1024px) 500px, 45vw"
+                alt={c.doctor}
+                className="abt-img"
+                loading="lazy"
+              />
               <div className="abt-tag">
-                <div className="abt-tag-n">{c.yearsTag}</div>
-                <div className="abt-tag-l">{c.yearsLabel}</div>
+                <div className="abt-tag-n">{hl.value}</div>
+                <div className="abt-tag-l">{hl.label}</div>
               </div>
             </div>
           </FadeUp>
@@ -37,9 +48,9 @@ export default function About() {
               <h2 className="abt-h2">
                 {c.doctor} —
                 <br />
-                <em className="gold-text">Vaš povjerenik</em>
+                <em className="gold-text">stručnost kojoj</em>
                 <br />
-                u stomatologiji
+                možete vjerovati
               </h2>
             </FadeUp>
             <FadeUp delay={0.26}>
@@ -52,8 +63,8 @@ export default function About() {
             </FadeUp>
             <FadeUp delay={0.34}>
               <div className="abt-feats">
-                {FEATURES.map((f, i) => (
-                  <div className="abt-feat" key={i}>
+                {FEATURES.map((f) => (
+                  <div className="abt-feat" key={f}>
                     <div className="abt-dot" />
                     <span>{f}</span>
                   </div>
@@ -62,7 +73,7 @@ export default function About() {
             </FadeUp>
             <FadeUp delay={0.42}>
               <SmartLink to="/#kontakt" className="btn btn-gold">
-                Rezerviraj konzultaciju →
+                Rezervirajte konzultaciju →
               </SmartLink>
             </FadeUp>
           </div>

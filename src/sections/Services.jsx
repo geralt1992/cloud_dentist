@@ -3,11 +3,11 @@ import Tilt from '../components/Tilt.jsx'
 
 const SERVICES = [
   ['01', '✦', 'Estetska stomatologija', 'Transformirajte osmijeh krunicama, furnirom i naprednim estetskim tretmanima koji pružaju prirodan, blistav izgled.'],
-  ['02', '◈', 'Implantati', 'Trajno rješenje za izgubljene zube. Titanijumski implantati pružaju čvrstoću i izgled savršenih prirodnih zuba.'],
-  ['03', '◇', 'Ortodoncija', 'Nevidljivi aparati i klasična terapija za savršeno poravnat osmijeh u svim godinama.'],
+  ['02', '◈', 'Implantati', 'Trajno rješenje za izgubljene zube. Titanski implantati pružaju čvrstoću i izgled savršenih prirodnih zuba.'],
+  ['03', '◇', 'Ortodoncija', 'Nevidljivi aligneri i klasični fiksni aparati za savršeno poravnat osmijeh u svim godinama.'],
   ['04', '✧', 'Bijeljenje zuba', 'Profesionalno bijeljenje do 8 nijansi svjetlije u jednoj posjeti. Dugotrajna i bezbolna metoda.'],
   ['05', '◉', 'Parodontologija', 'Liječenje desni i parodontnih tkiva najsuvremenijim metodama za zdravlje cijele usne šupljine.'],
-  ['06', '⬡', 'Dječja stomatologija', 'Opuštena, bezbolna iskustva za naše najmlađe. Gradimo temelje zdravog osmijeha od malih nogu.'],
+  ['06', '⬡', 'Dječja stomatologija', 'Opušteno i bezbolno iskustvo za naše najmlađe. Gradimo temelje zdravog osmijeha od malih nogu.'],
 ]
 
 export default function Services() {

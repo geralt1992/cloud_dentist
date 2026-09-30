@@ -26,8 +26,25 @@ na netu (ime ordinacije, doktor, adresa, telefon, radno vrijeme).
 
 Slug (ključ, npr. `dr-maric`) postaje dio linka. Promijeni ga u nešto čisto.
 
+Polja o kojima ovisi usklađenost teksta i slika:
+
+| Polje | Primjer | Što radi |
+|---|---|---|
+| `gender` | `'f'` ili `'m'` | **Obavezno.** Bira fotografiju (doktorica/doktor) i rod u tekstu ("Voditeljica/Voditelj ordinacije"). |
+| `city`, `cityIn`, `cityOf` | `'Đakovo'`, `'Đakovu'`, `'Đakova'` | Grad u padežima ("u Đakovu"). Za Osijek ne treba ništa. |
+| `patients`, `years` | `5000`, `20` | Brojke u heroju, "O nama" i statistici — uvijek iste na cijeloj stranici. |
+| `highlight` | `'patients'` | Koja se brojka ističe u heroju (default: godine iskustva). |
+| `rating`, `reviewCount` | `4.7`, `85` | Google ocjena (broj, ne tekst) — prikazuje se kao "4,7". |
+| `team` | vidi `implantati-osijek` | Pravi članovi tima umjesto generičkih (svaki s `gender`). |
+| `leadRole`, `leadDetail` | `'Specijalist ortodoncije'` | Uloga i opis voditelja u sekciji "Naš tim". |
+
+Pregled linka (WhatsApp, e-mail) automatski pokazuje ime ordinacije — build za
+svaki demo napravi `dist/demo/<slug>.html` s njihovim naslovom (vidi `vite.config.js`).
+
 > Savjet: realnije izgleda ako za svaku ordinaciju ubaciš pravu fotografiju
 > (polje `photo`) — npr. fasada ordinacije ili doktora s njihovog Facebooka/Googlea.
+> Ako u `team` imaš dvije osobe istog spola, drugoj zadaj vlastiti `photo`
+> (inače obje dobiju istu stock fotografiju).
 
 ### 3. Lokalno provjeri
 ```bash

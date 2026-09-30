@@ -1,14 +1,16 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-/* Ambient drifting particles + (opcionalno) ukrasni prsteni iza hero sekcije.
-   rings=false → samo čestice (koristi se na naslovnom hero). */
+/* Ambient drifting particles + (opcionalno) ukrasni prsteni iza hero sekcije cjenika.
+   Animacija se pauzira kad canvas nije u vidnom polju; uz prefers-reduced-motion
+   iscrta se samo jedan statični kadar. */
 export default function PricingHeroCanvas({ rings = true }) {
   const ref = useRef(null)
 
   useEffect(() => {
     const canvas = ref.current
     if (!canvas) return
+    const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches
 
     const W = window.innerWidth
     const H = canvas.parentElement.offsetHeight || 500
@@ -34,30 +36,25 @@ export default function PricingHeroCanvas({ rings = true }) {
     const geo = new THREE.BufferGeometry()
     const posAttr = new THREE.BufferAttribute(pos, 3)
     geo.setAttribute('position', posAttr)
-    const pts = new THREE.Points(
-      geo,
-      new THREE.PointsMaterial({ color: 0xc8a56a, size: 0.06, transparent: true, opacity: 0.45 })
-    )
-    scene.add(pts)
+    const ptsMat = new THREE.PointsMaterial({ color: 0xc8a56a, size: 0.06, transparent: true, opacity: 0.45 })
+    scene.add(new THREE.Points(geo, ptsMat))
+    const disposables = [geo, ptsMat]
 
     // Large decorative rings (opcionalno)
-    let ring, ring2
+    const ringMeshes = []
     if (rings) {
-      ring = new THREE.Mesh(
-        new THREE.TorusGeometry(4, 0.012, 16, 120),
-        new THREE.MeshBasicMaterial({ color: 0xc8a56a, transparent: true, opacity: 0.12 })
-      )
-      ring.rotation.x = Math.PI / 5
-      ring.position.x = 5
-      scene.add(ring)
-
-      ring2 = new THREE.Mesh(
-        new THREE.TorusGeometry(5.5, 0.008, 16, 120),
-        new THREE.MeshBasicMaterial({ color: 0xc8a56a, transparent: true, opacity: 0.07 })
-      )
-      ring2.rotation.x = Math.PI / 3
-      ring2.position.x = 4
-      scene.add(ring2)
+      const addRing = (radius, tube, opacity, rotX, posX) => {
+        const g = new THREE.TorusGeometry(radius, tube, 16, 120)
+        const m = new THREE.MeshBasicMaterial({ color: 0xc8a56a, transparent: true, opacity })
+        const mesh = new THREE.Mesh(g, m)
+        mesh.rotation.x = rotX
+        mesh.position.x = posX
+        scene.add(mesh)
+        disposables.push(g, m)
+        ringMeshes.push(mesh)
+      }
+      addRing(4, 0.012, 0.12, Math.PI / 5, 5)
+      addRing(5.5, 0.008, 0.07, Math.PI / 3, 4)
     }
 
     const onResize = () => {
@@ -65,11 +62,17 @@ export default function PricingHeroCanvas({ rings = true }) {
       camera.aspect = W2 / H
       camera.updateProjectionMatrix()
       renderer.setSize(W2, H)
+      if (reduce) renderer.render(scene, camera)
     }
     window.addEventListener('resize', onResize)
 
-    let rafId
+    let rafId = 0
+    let visible = true
     const animate = () => {
+      if (!visible) {
+        rafId = 0
+        return
+      }
       rafId = requestAnimationFrame(animate)
       // drift particles
       for (let i = 0; i < count; i++) {
@@ -79,17 +82,30 @@ export default function PricingHeroCanvas({ rings = true }) {
         if (Math.abs(pos[i * 3 + 1]) > 5) vel[i * 3 + 1] *= -1
       }
       posAttr.needsUpdate = true
-      if (rings) {
-        ring.rotation.z += 0.002
-        ring2.rotation.z -= 0.0015
+      if (ringMeshes.length) {
+        ringMeshes[0].rotation.z += 0.002
+        ringMeshes[1].rotation.z -= 0.0015
       }
       renderer.render(scene, camera)
     }
-    animate()
+
+    let io
+    if (reduce) {
+      renderer.render(scene, camera)
+    } else {
+      io = new IntersectionObserver(([e]) => {
+        visible = e.isIntersecting
+        if (visible && !rafId) animate()
+      })
+      io.observe(canvas)
+      animate()
+    }
 
     return () => {
       cancelAnimationFrame(rafId)
+      io?.disconnect()
       window.removeEventListener('resize', onResize)
+      disposables.forEach((d) => d.dispose())
       renderer.dispose()
     }
   }, [rings])
