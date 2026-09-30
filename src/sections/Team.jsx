@@ -4,14 +4,17 @@ import Img from '../components/Img.jsx'
 import { useClient } from '../client/ClientContext.jsx'
 
 /* Ljudi biraju ljude. Voditelj/ica i ostatak tima dolaze iz podataka klijenta
-   (src/data/clients.js); fotografije su već usklađene sa spolom. */
+   (src/data/clients.js). Stock lica idu samo uz izmišljena imena; stvarni doktor
+   iz demoa bez vlastite fotke prikazan je fotografijom ordinacije. */
 export default function Team() {
   const c = useClient()
   const members = [
     {
       name: c.doctor,
       role: c.leadRole || (c.gender === 'f' ? 'Voditeljica ordinacije' : 'Voditelj ordinacije'),
-      photo: c.photo,
+      photo: c.leadPhoto, // interijer ako je doktor stvaran, a nema vlastitu fotku
+      alt: c.photoIsFace ? c.doctor : 'Interijer ordinacije',
+      pos: c.photoIsFace ? undefined : '50% 60%',
       detail: c.leadDetail || 'Estetska i rekonstruktivna stomatologija s individualnim pristupom svakom osmijehu.',
     },
     ...c.team,
@@ -44,8 +47,9 @@ export default function Team() {
                     src={m.photo}
                     widths={[400, 700, 1000]}
                     sizes="(max-width: 680px) 380px, (max-width: 900px) 45vw, 360px"
-                    alt={m.name}
+                    alt={m.alt || m.name}
                     loading="lazy"
+                    style={m.pos ? { objectPosition: m.pos } : undefined}
                   />
                   <div className="team-reveal">
                     <p>{m.detail}</p>

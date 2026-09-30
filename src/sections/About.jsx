@@ -24,13 +24,15 @@ export default function About() {
           <FadeUp>
             <div className="abt-img-wrap" style={{ paddingBottom: 28, paddingRight: 18 }}>
               <div className="abt-frame" />
+              {/* Uz stvarnog doktora bez vlastite fotke ide interijer ordinacije, ne tuđe lice */}
               <Img
                 src={c.photo}
                 widths={[500, 800, 1100]}
                 sizes="(max-width: 1024px) 500px, 45vw"
-                alt={c.doctor}
+                alt={c.photoIsFace ? c.doctor : 'Interijer ordinacije'}
                 className="abt-img"
                 loading="lazy"
+                style={c.photoIsFace ? undefined : { objectPosition: '50% 70%' }}
               />
               <div className="abt-tag">
                 <div className="abt-tag-n">{hl.value}</div>

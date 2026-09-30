@@ -3,24 +3,24 @@ import ReviewsBadge from '../components/ReviewsBadge.jsx'
 import { useClient } from '../client/ClientContext.jsx'
 import { pexels } from '../lib/img.js'
 
-/* Generičke recenzije za sve demoe — bez imena doktora/ordinacije, da se ništa
+/* Izmišljene recenzije (ime + inicijal, da ne odgovaraju nijednoj stvarnoj osobi) — bez imena doktora/ordinacije, da se ništa
    ne kosi s klijentom. Grad se umeće iz podataka (c.cityIn = "Osijeku"). */
 const testimonials = (c) => [
   {
     txt: 'Nikada nisam vjerovala da ću se osjećati ovako lijepo s novim osmijehom. Rezultat je nadmašio sva očekivanja — prirodno, elegantno, savršeno.',
-    name: 'Maja Horvat',
+    name: 'Maja H.',
     role: 'Marketing direktorica',
     av: pexels(1239291, 120),
   },
   {
     txt: 'Implantati su savršeno usklađeni s mojim prirodnim zubima. Cijeli postupak bio je bezbolniji nego što sam mogao zamisliti. Vrhunska stručnost i ljubaznost.',
-    name: 'Tomislav Barić',
+    name: 'Tomislav B.',
     role: 'Arhitekt',
     av: pexels(220453, 120),
   },
   {
     txt: `Bijeljenje u jednoj posjeti i razlika je dramatična! Ordinacija je moderna, osoblje profesionalno — ovo mi je jedina adresa za stomatologiju u ${c.cityIn}.`,
-    name: 'Petra Nikolić',
+    name: 'Petra N.',
     role: 'Poduzetnica',
     av: pexels(774909, 120),
   },

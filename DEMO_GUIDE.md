@@ -30,19 +30,21 @@ Polja o kojima ovisi usklađenost teksta i slika:
 
 | Polje | Primjer | Što radi |
 |---|---|---|
-| `gender` | `'f'` ili `'m'` | **Obavezno.** Bira fotografiju (doktorica/doktor) i rod u tekstu ("Voditeljica/Voditelj ordinacije"). |
+| `gender` | `'f'` ili `'m'` | **Obavezno.** Rod u tekstu ("Voditeljica/Voditelj ordinacije"). |
+| `photo` | URL | Samo **prava** fotografija doktora/ice (uz njihov pristanak). Bez nje demo prikazuje fotografiju ordinacije — stock lice se nikad ne stavlja uz stvarno ime. |
 | `city`, `cityIn`, `cityOf` | `'Đakovo'`, `'Đakovu'`, `'Đakova'` | Grad u padežima ("u Đakovu"). Za Osijek ne treba ništa. |
 | `patients`, `years` | `5000`, `20` | Brojke u heroju, "O nama" i statistici — uvijek iste na cijeloj stranici. |
 | `highlight` | `'patients'` | Koja se brojka ističe u heroju (default: godine iskustva). |
 | `rating`, `reviewCount` | `4.7`, `85` | Google ocjena (broj, ne tekst) — prikazuje se kao "4,7". |
-| `team` | vidi `implantati-osijek` | Pravi članovi tima umjesto generičkih (svaki s `gender`). |
+| `team` | `[{ name, gender, role, detail }]` | Ostali članovi tima. Izmišljena imena dobivaju stock lica; stvarnu osobu dodaj samo s njezinom pravom fotkom (`photo`). Bez polja ostaju generički izmišljeni članovi. |
 | `leadRole`, `leadDetail` | `'Specijalist ortodoncije'` | Uloga i opis voditelja u sekciji "Naš tim". |
 
 Pregled linka (WhatsApp, e-mail) automatski pokazuje ime ordinacije — build za
 svaki demo napravi `dist/demo/<slug>.html` s njihovim naslovom (vidi `vite.config.js`).
 
-> Savjet: realnije izgleda ako za svaku ordinaciju ubaciš pravu fotografiju
-> (polje `photo`) — npr. fasada ordinacije ili doktora s njihovog Facebooka/Googlea.
+> Izmišljena imena (default predložak, generički tim, recenzije "Maja H.") provjerena su
+> da ne pripadaju stvarnim stomatolozima. Ako dodaješ novo izmišljeno ime, prvo ga
+> potraži na internetu (npr. "Ime Prezime" stomatolog).
 > Ako u `team` imaš dvije osobe istog spola, drugoj zadaj vlastiti `photo`
 > (inače obje dobiju istu stock fotografiju).
 

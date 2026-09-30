@@ -8,19 +8,23 @@
    Sve ostalo (usluge, galerija, recenzije...) ostaje generičko i izgleda dobro.
 
    Važno za usklađenost teksta i slika:
-   - gender: 'm' | 'f'  → bira fotografiju voditelja/ice i rod u tekstu
-     ("Voditelj/Voditeljica ordinacije"). Vlastitu fotku postavi poljem `photo`.
+   - gender: 'm' | 'f'  → rod u tekstu ("Voditelj/Voditeljica ordinacije").
+   - photo              → PRAVA fotografija doktora/ice. Bez nje demo uz stvarno ime
+     prikazuje fotografiju ordinacije — nasumično stock lice nikad ne "glumi" stvarnu osobu.
    - cityIn / cityOf    → grad u padežima: "u Osijeku" / "iz Osijeka".
    - patients / years   → brojke u heroju, "O nama" i statistici (uvijek iste).
      highlight: 'years' | 'patients' → koja se od njih ističe u heroju.
-   - team               → ostali članovi tima (umjesto generičkih placeholdera).
+   - team               → ostali članovi tima. Samo izmišljena imena (dobivaju stock lica);
+     stvarnu osobu dodaj isključivo s njezinom pravom fotkom (polje `photo`).
    ───────────────────────────────────────────────────────────────────────── */
 
 import { pexels } from '../lib/img.js'
 
-/* Stock fotografije provjerene da odgovaraju spolu i da na odjeći nema tuđeg imena/loga. */
+/* Stock fotografije (provjereni spol, bez tuđih imena/logotipa na odjeći) — SAMO uz izmišljena imena. */
 const DOCTOR_PHOTOS = { m: pexels(6812464), f: pexels(5355864) }
 const TEAM_PHOTOS = { m: pexels(6627836), f: pexels(19332236) }
+/* Interijer (bez ljudi) umjesto lica uz ime stvarnog doktora/ice u demoima. */
+const PRACTICE_PHOTOS = { about: pexels(4269264), lead: pexels(4269265) }
 
 const BASE = {
   name: 'DentArt',
@@ -46,7 +50,7 @@ const BASE = {
   // Ostatak tima — generički placeholderi (zamijeni stvarnim timom po klijentu)
   team: [
     {
-      name: 'dr. med. dent. Iva Marić',
+      name: 'dr. med. dent. Lea Šarić', // izmišljeno ime — provjereno da nije stvarna stomatologinja
       gender: 'f',
       role: 'Implantologija',
       detail: 'Usmjerena na zubne implantate i oralnu kirurgiju, uz naglasak na nježne i bezbolne tehnike.',
@@ -106,23 +110,8 @@ export const CLIENTS = {
     highlight: 'patients',
     rating: 4.7,
     bio: [
-      'Tim Dentalnog implantološkog centra Osijek čine iskusni i profesionalni stručnjaci — dr. Saša Đukić, dr. Lorena Horvat i dr. Nikola Joakim Đitko — koji kontinuirano usavršavaju svoje znanje.',
+      'Dentalni implantološki centar Osijek vodi dr. med. dent. Saša Đukić, a tim čine iskusni i profesionalni stručnjaci koji kontinuirano usavršavaju svoje znanje.',
       'Specijaliziran za implantologiju i estetsku stomatologiju, centar pruža cjelovitu skrb uz vrhunsku opremu, a pacijenti ga u prosjeku ocjenjuju s 4,7 zvjezdica.',
-    ],
-    // stvarni tim s njihove stranice (uloge nisu navedene — provjeri)
-    team: [
-      {
-        name: 'dr. med. dent. Lorena Horvat',
-        gender: 'f',
-        role: 'Doktorica dentalne medicine',
-        detail: 'Implantologija i estetska stomatologija, uz individualan pristup svakom pacijentu.',
-      },
-      {
-        name: 'dr. med. dent. Nikola Joakim Đitko',
-        gender: 'm',
-        role: 'Doktor dentalne medicine',
-        detail: 'Moderna dentalna medicina — od preventive do složenih protetskih rješenja.',
-      },
     ],
     contact: {
       address: 'Ul. Otokara Keršovanija 10A, 31000 Osijek',
@@ -227,25 +216,32 @@ export const CLIENTS = {
   },
 }
 
-/* Popuni fotografije prema spolu (ako nisu zadane ručno) — ime i slika uvijek se slažu. */
-function finalize(c) {
+/* Popuni fotografije. Stock lice (prema spolu) dobiva samo izmišljeni doktor predloška;
+   stvarni doktor iz demoa bez vlastite fotke dobiva fotografije ordinacije. */
+function finalize(c, { real }) {
+  const face = c.photo || (real ? null : DOCTOR_PHOTOS[c.gender] || DOCTOR_PHOTOS.m)
   return {
     ...c,
-    photo: c.photo || DOCTOR_PHOTOS[c.gender] || DOCTOR_PHOTOS.m,
+    photo: face || PRACTICE_PHOTOS.about, // "O nama"
+    leadPhoto: face || PRACTICE_PHOTOS.lead, // prva kartica u "Naš tim"
+    photoIsFace: Boolean(face),
     team: c.team.map((m) => ({ ...m, photo: m.photo || TEAM_PHOTOS[m.gender] || TEAM_PHOTOS.m })),
   }
 }
 
-export const DEFAULT_CLIENT = finalize({ ...BASE, slug: 'dentart' })
+export const DEFAULT_CLIENT = finalize({ ...BASE, slug: 'dentart' }, { real: false })
 
 /* Vrati podatke klijenta po slugu, popunjene defaultima za sve što nije navedeno. */
 export function getClient(slug) {
   const c = slug && CLIENTS[slug]
   if (!c) return DEFAULT_CLIENT
-  return finalize({
-    ...BASE,
-    ...c,
-    slug,
-    contact: { ...BASE.contact, ...(c.contact || {}) },
-  })
+  return finalize(
+    {
+      ...BASE,
+      ...c,
+      slug,
+      contact: { ...BASE.contact, ...(c.contact || {}) },
+    },
+    { real: true }
+  )
 }
